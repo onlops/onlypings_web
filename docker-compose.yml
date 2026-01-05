@@ -1,0 +1,10 @@
+services:
+  web:
+    build: .
+    container_name: onlypings_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # ეს ძალიან მნიშვნელოვანია! ბაზა შეინახება შენს კომპიუტერშიც
+      - ./onlypings_data:/app/data
+    restart: always
