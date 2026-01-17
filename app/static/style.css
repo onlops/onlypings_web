@@ -794,7 +794,6 @@ body.dark-mode .ping-right-panel {
 /* Sonar Title inside panel */
 .panel-title {
     font-size: 14px;
-    letter-spacing: 2px;
     color: var(--text-muted);
     text-transform: uppercase;
     width: 100%;
@@ -1542,13 +1541,6 @@ body.dark-mode .legal-content p {
     }
 }
 
-/* --- GEORGIAN FONT SPACING --- */
-
-/* როცა ქართული ენაა ჩართული, ასოების დაშორება */
-body.lang-ge {
-    letter-spacing: 2px; /* შეცვალე ეს ციფრი სურვილისამებრ (მაგ: 1px) */
-}
-
 
 /* გამონაკლისები: აიკონები და კოდები არ უნდა გაიწელოს */
 body.lang-ge .game-icon,
@@ -1558,21 +1550,3 @@ body.lang-ge .material-icons {
     letter-spacing: normal;
 }
 
-/* თუ სათაურებზე მეტი დაშორება გინდა */
-body.lang-ge h1, 
-body.lang-ge h2, 
-body.lang-ge h3 {
-    letter-spacing: 2px;
-}
-
-/* ეს კონკრეტულად ღილაკებს აიძულებს გაწელონ ტექსტი ქართულზე */
-body.lang-ge .btn {
-    letter-spacing: 2px; /* შეგიძლია გაზარდო 1.5px-მდე თუ გინდა */
-}
-
-/* თუ სხვა ელემენტებზეც (მაგ: input) არ მუშაობს, ესეც მიამატე: */
-body.lang-ge input,
-body.lang-ge select,
-body.lang-ge textarea {
-    letter-spacing: 2px;
-}
