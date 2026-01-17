@@ -1,0 +1,1578 @@
+:root {
+    /* Light Mode Colors */
+    --primary-blue: #2D9CDB;
+    --primary-blue-hover: #2280B8;
+    --bg-main: #FFFFFF;
+    --bg-secondary: #FAFAFA;
+    --text-main: #333333;
+    --text-muted: #828282;
+    --border-color: #E0E0E0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+body.dark-mode {
+    --bg-main: #1A1A1E;
+    --bg-secondary: #1E1E1E;
+    --text-main: #F2F2F2;
+    --text-muted: #818181;
+    --border-color: #333333;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Header */
+header {
+    height: 90px;
+    width: 100%;
+    background: var(--bg-main);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Header Content */
+.header-content {
+    max-width: 1440px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-img {
+    height: 80px;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    font-family: 'Inter', sans-serif;
+    border: none;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+.btn-outline:hover {
+    background: rgba(45, 156, 219, 0.1);
+}
+
+.btn-primary {
+    background: var(--primary-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-blue-hover);
+}
+
+/* Main Layout */
+.layout-container {
+    display: flex;
+    flex: 1;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 200px;
+    padding-left: 60px;
+    padding-top: 70px;
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.nav-link {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 16px;
+    margin-bottom: 50px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+/* Vertical Lines between Menu Items */
+.nav-link:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 16px;
+    bottom: -50px;
+    width: 1px;
+    height: 50px;
+    background-color: var(--border-color);
+    opacity: 0.8;
+}
+
+.sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.content-area {
+    flex: 1;
+    padding: 0 40px;
+    margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 70px);
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 0;
+}
+
+#main-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    width: 100%;
+}
+
+/* მობილურისთვის */
+@media (max-width: 768px) {
+    #main-wrapper {
+        padding: 0 20px;
+        gap: 30px;
+    }
+}
+
+.radar-card,
+.warroom-card,
+.armory-card,
+.intel-card {
+    width: 100%;
+    height: 600px;
+    border: 1px solid var(--border-color);
+    border-radius: 54px; /* შენი არჩეული მომრგვალება */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* ეს დავამატე, რომ ღილაკი და ტექსტი ლამაზად განლაგდეს */
+    background: var(--bg-main);
+    transition: all 0.3s ease; /* ანიმაცია თემების გადაცვლისას */
+    scroll-margin-top: 50px;
+}
+
+.radar-card h1,
+.warroom-card h1,
+.armory-card h1,
+.intel-card h1 {
+    font-size: 32px;
+    color: var(--text-main);
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+/* --- DARK MODE: აქ ხდება "ჩაღრმავების" მაგია --- */
+body.dark-mode .radar-card,
+body.dark-mode .warroom-card,
+body.dark-mode .armory-card,
+body.dark-mode .intel-card {
+    /* ფონი */
+    background-color: var(--bg-main);
+
+    /* border: 1px solid rgba(103, 71, 33, 1);  */
+}
+
+
+
+/* Splash Screen */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-main) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out, visibility 0.5s;
+}
+
+.splash-logo {
+    width: 900px;
+    height: auto;
+    animation: zoomInLogo 1.8s ease-out forwards;
+    position: relative;
+    top: -100px;
+}
+
+@keyframes zoomInLogo {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+#splash-screen.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* ფუტერის გარშემო არსებული დივი */
+.footer-wrapper {
+    width: 100%;
+    flex-shrink: 0; /* არ შეიკუმშოს */
+    background: var(--bg-white); /* ფონის ფერი, რომ ხაზი არ ჩანდეს */
+}
+
+body.dark-mode .footer-wrapper {
+    background: var(--bg-main);
+}
+
+/* Footer Logo Container & Link behavior */
+.footer-logo-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0;
+}
+
+.center-logo {
+    max-height: 512px; 
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.scroll-top-link {
+    cursor: pointer; 
+    display: inline-block;
+}
+
+.scroll-top-link:hover .center-logo {
+    transform: scale(1.05); 
+}
+
+/* Footer */
+.site-footer {
+    width: 100%;
+    height: 120px;
+    background: var(--bg-white);
+    flex-shrink: 0;
+    margin-top: max(24px, calc(100dvh - 1250px));
+}
+
+@media (max-width: 768px) {
+    #main-wrapper {
+        padding: 0 20px;
+        gap: 30px;
+    }
+}
+
+
+.footer-content {
+    max-width: 1440px;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Footer Left (Logo & Copy) */
+.footer-section-left {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    gap: 25px;
+}
+
+.copyright {
+    font-size: 13px;
+}
+
+/* Footer Center (Links) */
+.footer-links {
+    display: flex;
+    gap: 30px;
+}
+
+.footer-link {
+    text-decoration: none;
+    color: var(--text-gray);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: var(--primary-blue);
+}
+
+.footer-section-center {
+    text-align: center;
+}
+
+.footer-section-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+.support-text {
+    font-size: 13px;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.discord-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #5865F2;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.discord-btn:hover {
+    background-color: #4752C4;
+    transform: translateY(-1px);
+}
+
+/* Language Container */
+.lang-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+}
+
+.current-lang-wrapper {
+    cursor: pointer;
+    z-index: 10;
+}
+
+.icon-flag {
+    width: 30px;
+    height: 30px;
+    display: block;
+    transition: 0.2s;
+}
+
+.icon-flag:hover {
+    transform: scale(1.1);
+}
+
+/* Language Options Dropdown */
+.lang-options {
+    position: absolute;
+    left: 40px;
+    top: 0;
+    display: flex;
+    gap: 10px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    z-index: 99;
+}
+
+.lang-options.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.lang-option-img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.lang-option-img:hover {
+    transform: scale(1.1);
+}
+
+/* Dark Mode Theme Icon */
+body.dark-mode #themeIcon {
+    filter: invert(1) brightness(2);
+}
+
+/* Theme Toggle Animations */
+@keyframes rotateToLeft {
+    0% {
+        transform: rotate(45deg);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes rotateToRight {
+    0% {
+        transform: rotate(-45deg);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.anim-sun {
+    animation: rotateToLeft 0.2s ease-out;
+}
+
+.anim-moon {
+    animation: rotateToRight 0.2s ease-out;
+}
+
+/* Icon Container & Hover Styles */
+.icon-group {
+    width: fit-content;
+    height: auto;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.6;
+    transform: scale(1);
+    transform-origin: center center;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.icon-group:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.icon-group img {
+    width: 30px;
+    height: 30px;
+    display: block;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #FFFFFF;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #C1C1C1;
+    border-radius: 6px;
+    border: 3px solid #FFFFFF;
+}
+
+/* Dark Mode Scrollbar */
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #1A1A1E;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background-color: #444444;
+    border: 3px solid #1A1A1E;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background-color: #2D9CDB;
+}
+
+/* --- RADAR SECTION STYLES --- */
+
+/* Allow card to grow if content is large */
+.radar-card {
+    height: auto !important; 
+    min-height: 600px;
+    justify-content: flex-start !important;
+    padding: 40px;
+    gap: 30px;
+}
+
+.radar-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.radar-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* დაშორება ტექსტსა და დროშებს შორის */
+    margin-bottom: 5px;
+}
+
+.radar-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.legal-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+
+.header-flag {
+    height: 28px; /* დროშის სიმაღლე */
+    width: auto; /* სიგანე ავტომატურად, პროპორციის დასაცავად */
+    border-radius: 4px; /* ოდნავ მომრგვალებული კუთხეები, თუ გინდა */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* პატარა ჩრდილი, რომ გამოიკვეთოს */
+}
+
+.flag-container {
+    display: flex;
+    gap: 8px; /* დაშორება თვითონ დროშებს შორის */
+    align-items: center;
+}
+
+.radar-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-family: 'Courier New', monospace; /* Tech vibe */
+}
+
+.war-subtitle {
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    font-family: 'Courier New', monospace;
+    padding-bottom: 20px;
+}
+
+
+
+.status-green { color: #27ae60; font-weight: bold; }
+.flag-animation { letter-spacing: 2px; }
+
+
+/* Individual Server Card */
+.server-card {
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Dark Mode Adjustment for Cards */
+body.dark-mode .server-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: #333;
+}
+
+.server-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px var(--shadow-color);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.game-icon { font-size: 24px; }
+
+.server-card h3 {
+    font-size: 16px;
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Status Badges */
+.status-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-badge.online {
+    background-color: rgba(39, 174, 96, 0.15);
+    color: #27ae60;
+}
+
+.status-badge.restarting {
+    background-color: rgba(243, 156, 18, 0.15);
+    color: #f39c12;
+}
+
+/* Stats Rows */
+.card-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stat-row strong { color: var(--text-main); }
+
+/* Buttons inside cards */
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 12px;
+    width: 100%;
+    text-align: center;
+    text-decoration: none; /* For <a> tags */
+}
+
+.btn-disabled {
+    background: #e0e0e0;
+    color: #888;
+    cursor: not-allowed;
+}
+
+body.dark-mode .btn-disabled {
+    background: #333;
+    color: #555;
+}
+
+
+
+#pingBtn {
+    width: 190px; 
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.pulse-btn:active {
+    transform: scale(0.95);
+}
+
+/* --- LOADING SPINNER (Fixed Circle) --- */
+.loading-spinner {
+    /* ზომები !important-ით, რომ არაფერმა გადააწეროს */
+    width: 28px !important;
+    height: 28px !important;
+    
+    /* ეს ბრაუზერს აიძულებს შეინარჩუნოს კვადრატული პროპორცია (1:1) */
+    aspect-ratio: 1 / 1;
+    
+    /* ფორმის დაცვა */
+    min-width: 28px !important;
+    min-height: 28px !important;
+    border-radius: 50% !important; /* აუცილებლად 50% */
+    
+    /* დიზაინი */
+    border: 3px solid rgba(136, 136, 136, 0.2);
+    border-top-color: var(--primary-blue);
+    
+    display: block;
+    margin: 0 auto; /* ცენტრში გაჩერება */
+    flex-shrink: 0; /* აკრძალვა შეკუმშვაზე */
+    
+    animation: spin 0.8s linear infinite;
+}
+
+/* ანიმაციის ლოგიკა - უბრალოდ ტრიალებს */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* --- NEW RADAR LAYOUT (2 Columns) --- */
+
+.radar-content-wrapper {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+    /* ეს აიძულებს მარჯვენა მხარეს, გაიწელოს მარცხენას სიმაღლეზე */
+    align-items: stretch; 
+}
+
+/* LEFT PANEL (Servers) */
+.servers-left-panel {
+    flex: 3; /* იკავებს სივრცის 3 წილს (უფრო განიერია) */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 სვეტი: გვერდიგვერდ 2 სერვერი */
+    grid-template-rows: 1fr 1fr;    /* 2 რიგი: სულ 4 ცალი */
+    gap: 20px;
+}
+
+/* RIGHT PANEL (Ping / Sonar) */
+.ping-right-panel {
+    flex: 1; /* იკავებს სივრცის 1 წილს (უფრო ვიწროა) */
+    background: var(--bg-main); /* ან ოდნავ განსხვავებული ფერი */
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    
+    /* შიგთავსის განლაგება */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* ელემენტებს გადაანაწილებს ზემოთ, შუაში და ქვემოთ */
+    text-align: center;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.03); /* "ჩაღრმავებული" ეფექტი */
+}
+
+/* Dark mode adjustment for right panel */
+body.dark-mode .ping-right-panel {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: #444;
+}
+
+/* Sonar Title inside panel */
+.panel-title {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    width: 100%;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* Center Content (Ping Result) */
+.ping-content-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1; /* იკავებს თავისუფალ ადგილს შუაში */
+}
+
+.ping-display {
+    /* ისევ ის პარამეტრები, რაც მრგვალი სპინერისთვის გვინდოდა */
+    width: 90px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    
+    font-family: 'Courier New', monospace;
+    font-size: 32px; /* ოდნავ გავზარდე რიცხვი */
+    font-weight: bold;
+    color: var(--primary-blue);
+    margin-bottom: 5px;
+}
+
+.ping-label {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Footer Info inside panel */
+.ping-footer-info {
+    font-size: 10px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 15px;
+}
+
+.blink-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #27ae60;
+    border-radius: 50%;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; box-shadow: 0 0 5px #27ae60; }
+    100% { opacity: 0.4; }
+}
+
+/* Mobile Responsiveness: ტელეფონზე ჩამოიტანოს ქვემოთ */
+@media (max-width: 768px) {
+    .radar-content-wrapper {
+        flex-direction: column; /* სვეტებად განლაგება */
+    }
+    
+    .servers-left-panel {
+        grid-template-columns: 1fr; /* სერვერებიც თითო-თითო */
+    }
+    
+    .ping-right-panel {
+        min-height: 200px; /* ტელეფონზე სიმაღლის შეზღუდვა */
+    }
+}
+
+/* --- SERVER IP DISPLAY (For Mobile Visibility) --- */
+.server-ip-box {
+    background: rgba(0, 0, 0, 0.06); /* ოდნავ მუქი ფონი */
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+    font-family: 'Courier New', monospace; /* კოდის ფონტი */
+    font-size: 13px;
+    color: var(--text-main);
+    font-weight: 600;
+    margin-bottom: 5px; /* დაშორება ღილაკთან */
+    margin-top: auto; /* მიაწვება ზედა ელემენტებს */
+    border: 1px dashed var(--border-color); /* წყვეტილი ჩარჩო ტექნიკური ვიზუალისთვის */
+    
+    /* ეს ძალიან მაგარი რამეა: */
+    user-select: all; /* ერთხელ დაწკაპუნებით მთლიანად მოინიშნება */
+}
+
+/* Dark Mode-ზე რომ კარგად ჩანდეს */
+body.dark-mode .server-ip-box {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border-color: #444;
+}
+
+/* --- WAR ROOM FINAL (FIXED WIDTHS & HARDWARE SPECS) --- */
+
+.warroom-card {
+    height: auto !important;
+    min-height: 800px;
+    padding: 40px; /* აუცილებელი პადინგი */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* ცენტრირება */
+}
+
+/* System Status Container (New Hardware Look) */
+.system-status-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%; /* მთლიან სიგანეზე */
+    margin-bottom: 30px;
+    flex-wrap: wrap; /* მობილურზე რომ ჩამოვიდეს */
+}
+
+.sys-box {
+    flex: 1;
+    min-width: 250px;
+    background: var(--inner-card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s;
+}
+
+.sys-box:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-blue);
+}
+
+.sys-icon {
+    font-size: 28px;
+    background: rgba(45, 156, 219, 0.1);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.sys-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.sys-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.sys-val {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-main);
+    font-family: 'Courier New', monospace;
+    margin: 2px 0;
+}
+
+/* Hardware Specs Text (DDR5, Ryzen etc) */
+.sys-sub {
+    font-size: 11px;
+    color: var(--primary-blue); /* გამორჩეული ფერი */
+    font-weight: 600;
+    background: rgba(45, 156, 219, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+/* Grid Layout Fixes */
+.warroom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* ზუსტად შუაზე */
+    gap: 25px;
+    width: 100%; /* აუცილებელია! */
+    box-sizing: border-box; /* რომ არ გაიწელოს */
+}
+
+/* Panel Design Fixed */
+.stat-panel {
+    background: var(--inner-card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    height: 500px; 
+    width: 100%; /* აუცილებელია! */
+}
+
+.panel-top {
+    padding: 20px 20px 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(0,0,0,0.02);
+    flex-shrink: 0;
+}
+
+.stat-panel h3 {
+    font-size: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+}
+
+.server-tag {
+    font-size: 10px;
+    background: var(--primary-blue);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Table Headers */
+.table-header {
+    display: flex;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    padding-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Columns Widths */
+.th-rank { width: 35px; text-align: center; }
+.th-name { flex: 1; padding-left: 10px; }
+.th-score { width: 70px; text-align: right; }
+.th-extra { width: 70px; text-align: right; padding-right: 5px; }
+
+/* Scrollable Area */
+.scrollable-list {
+    flex: 1;
+    padding: 10px 0;
+    transition: max-height 0.4s ease-in-out;
+}
+
+.scrollable-list.collapsed {
+    max-height: 240px; /* დაახლოებით 5-6 კაცი */
+    overflow: hidden; /* სქროლი გათიშულია! */
+    
+    /* ეფექტი: ქვემოთ გამჭვირვალე ხდება */
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+
+.scrollable-list.expanded {
+    max-height: 500px; /* სრული სიმაღლე */
+    overflow-y: auto; /* სქროლი ჩაირთვება */
+    -webkit-mask-image: none; /* ეფექტი მოიხსნება */
+    mask-image: none;
+}
+
+/* ღილაკის კონტეინერი */
+.panel-footer {
+    padding: 10px;
+    border-top: 1px solid var(--border-color);
+    background: rgba(0,0,0,0.02);
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.panel-footer:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.show-more-btn {
+    background: none;
+    border: none;
+    color: var(--primary-blue);
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+}
+
+/* List Items (Rows) */
+.list-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+    transition: background 0.2s;
+}
+
+.list-row:hover {
+    background: rgba(45, 156, 219, 0.05);
+}
+
+/* Row Columns Matching Header */
+.row-rank { 
+    width: 35px; 
+    text-align: center; 
+    font-weight: 800; 
+    color: var(--text-muted); 
+    font-family: 'Courier New', monospace;
+}
+.row-name { 
+    flex: 1; 
+    padding-left: 10px; 
+    font-weight: 600; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.row-score { 
+    width: 70px; 
+    text-align: right; 
+    font-weight: 700; 
+    color: var(--primary-blue);
+    font-family: 'Courier New', monospace;
+}
+.row-extra { 
+    width: 70px; 
+    text-align: right; 
+    padding-right: 5px;
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+/* Top 3 Styling */
+.rank-1 .row-rank { color: #f1c40f; }
+.rank-2 .row-rank { color: #bdc3c7; }
+.rank-3 .row-rank { color: #cd7f32; }
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+    .warroom-grid { grid-template-columns: 1fr; } 
+    .system-status-container { flex-direction: column; }
+    .sys-box { width: 100%; }
+}
+
+/* --- ARMORY STYLES --- */
+
+.armory-card {
+    height: auto !important;
+    min-height: 800px;
+    padding: 40px;
+}
+
+/* Section Dividers */
+.armory-section-title {
+    width: 100%;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.mc-title { margin-top: 60px; } /* მეტი დაშორება მეორე სექციისთვის */
+
+/* Grid Layouts */
+.armory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 სვეტი CS-ისთვის */
+    gap: 20px;
+    width: 100%;
+}
+
+.armory-grid.three-col {
+    grid-template-columns: repeat(3, 1fr); /* 3 სვეტი MC-ისთვის */
+    max-width: 1000px; /* ოდნავ ვიწრო, რომ ცენტრში იყოს */
+    margin: 0 auto;
+}
+
+/* Package Card Base */
+.package-card {
+    background: var(--inner-card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative; /* Ribbon-ისთვის */
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    overflow: hidden;
+}
+
+.package-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+/* Card Header */
+.card-top {
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding-bottom: 20px;
+}
+
+.tier-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.package-card h3 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-main);
+    font-family: 'Courier New', monospace;
+}
+
+.period {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* Feature List */
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px 0;
+    width: 100%;
+    flex-grow: 1; /* ღილაკი ქვემოთ რომ ჩავიდეს */
+}
+
+.feature-list li {
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.check { color: #27ae60; font-weight: bold; }
+.cross { color: #e74c3c; font-weight: bold; opacity: 0.5; }
+
+/* --- TIER RARITY COLORS (Borders & Glows) --- */
+
+/* DEFAULT (Grey) */
+.tier-default { border-top: 4px solid #95a5a6; }
+
+/* COMMON / SOLDIER (Blue) */
+.tier-common { border-top: 4px solid #3498db; }
+.tier-common:hover { border-color: #3498db; box-shadow: 0 10px 25px rgba(52, 152, 219, 0.2); }
+
+/* RARE / GENERAL (Purple) */
+.tier-rare { border-top: 4px solid #9b59b6; }
+.tier-rare:hover { border-color: #9b59b6; box-shadow: 0 10px 25px rgba(155, 89, 182, 0.2); }
+
+/* LEGENDARY / KING (Gold) */
+.tier-legendary { 
+    border-top: 4px solid #f1c40f; 
+    background: linear-gradient(to bottom, rgba(241, 196, 15, 0.05), transparent);
+}
+.tier-legendary:hover { border-color: #f1c40f; box-shadow: 0 10px 30px rgba(241, 196, 15, 0.3); }
+
+/* GOD / HEROBRINE (Red/Black) */
+.tier-god { 
+    border-top: 4px solid #e74c3c; 
+    background: linear-gradient(to bottom, rgba(231, 76, 60, 0.05), transparent);
+}
+.tier-god:hover { border-color: #e74c3c; box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3); }
+
+
+/* --- EXTRAS --- */
+
+/* Ribbon for Popular Items */
+.ribbon {
+    position: absolute;
+    top: 12px;
+    right: -30px;
+    background: #27ae60;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 5px 30px;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Glowing Button */
+.glow-btn {
+    box-shadow: 0 0 15px rgba(45, 156, 219, 0.4);
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 10px rgba(45, 156, 219, 0.4); }
+    50% { box-shadow: 0 0 20px rgba(45, 156, 219, 0.7); }
+    100% { box-shadow: 0 0 10px rgba(45, 156, 219, 0.4); }
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+    .armory-grid { grid-template-columns: 1fr 1fr; }
+    .armory-grid.three-col { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    .armory-grid { grid-template-columns: 1fr; }
+}
+
+/* --- INTEL SECTION STYLES --- */
+
+.intel-card {
+    height: auto !important;
+    min-height: 600px;
+    padding: 40px;
+}
+
+/* Tabs Navigation */
+.intel-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.intel-tab {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.intel-tab:hover {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+.intel-tab.active {
+    background: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+    box-shadow: 0 4px 15px rgba(45, 156, 219, 0.3);
+}
+
+/* Content Area */
+.intel-content {
+    animation: fadeIn 0.4s ease-in-out;
+    width: 100%;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Command Grid (Terminal Style) */
+.command-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.cmd-item {
+    background: var(--inner-card-bg);
+    border-left: 3px solid var(--primary-blue);
+    padding: 15px;
+    border-radius: 0 8px 8px 0; /* მარცხენა მხარე სწორი, მარჯვენა მომრგვალებული */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.cmd-code {
+    font-family: 'Courier New', monospace;
+    font-weight: 800;
+    color: var(--text-main);
+    font-size: 16px;
+    background: rgba(0,0,0,0.05);
+    width: fit-content;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+body.dark-mode .cmd-code {
+    background: rgba(255,255,255,0.1);
+    color: var(--primary-blue);
+}
+
+.cmd-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* Protocols / Rules Styling */
+.rules-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.rule-box {
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+}
+
+.rule-header {
+    font-weight: 800;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+/* Severity Levels */
+.rule-box.severe {
+    background: rgba(231, 76, 60, 0.1);
+    border-color: rgba(231, 76, 60, 0.3);
+    color: #c0392b;
+}
+.rule-box.severe p { color: var(--text-main); } /* ტექსტი რომ იკითხებოდეს */
+
+.rule-box.warning {
+    background: rgba(243, 156, 18, 0.1);
+    border-color: rgba(243, 156, 18, 0.3);
+    color: #d35400;
+}
+.rule-box.warning p { color: var(--text-main); }
+
+.rule-box.info {
+    background: rgba(45, 156, 219, 0.1);
+    border-color: rgba(45, 156, 219, 0.3);
+    color: #2980b9;
+}
+.rule-box.info p { color: var(--text-main); }
+
+/* --- LEGAL & POLICY SECTIONS --- */
+
+.legal-card {
+    width: 100%;
+    min-height: 600px;
+    border: 1px solid var(--border-color);
+    border-radius: 54px;
+    background: var(--bg-main);
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.legal-content {
+    max-width: 800px;
+    text-align: left;
+    margin-top: 20px;
+}
+
+.legal-content h3 {
+    color: var(--primary-blue);
+    font-size: 18px;
+    margin-bottom: 10px;
+    margin-top: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 800;
+}
+
+.legal-content p {
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+body.dark-mode .legal-content p {
+    color: #b0b0b0;
+}
+
+/* Footer Active States */
+.footer-link.active-legal {
+    color: var(--primary-blue);
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(45, 156, 219, 0.3);
+}
+
+/* Sidebar Faded State */
+.nav-link.faded {
+    opacity: 0.4;
+    filter: grayscale(100%);
+}
+
+.nav-link.faded:hover {
+    opacity: 1;
+    filter: grayscale(0%);
+}
+
+/* მობილურზე ტექსტის ზომის კორექცია */
+@media (max-width: 768px) {
+    .legal-card {
+        padding: 30px;
+    }
+    .legal-content h3 {
+        font-size: 16px;
+    }
+    .legal-content p {
+        font-size: 14px;
+    }
+}
+
+/* --- GEORGIAN FONT SPACING --- */
+
+/* როცა ქართული ენაა ჩართული, ასოების დაშორება */
+body.lang-ge {
+    letter-spacing: 2px; /* შეცვალე ეს ციფრი სურვილისამებრ (მაგ: 1px) */
+}
+
+
+/* გამონაკლისები: აიკონები და კოდები არ უნდა გაიწელოს */
+body.lang-ge .game-icon,
+body.lang-ge .tier-icon,
+body.lang-ge .cmd-code,
+body.lang-ge .material-icons {
+    letter-spacing: normal;
+}
+
+/* თუ სათაურებზე მეტი დაშორება გინდა */
+body.lang-ge h1, 
+body.lang-ge h2, 
+body.lang-ge h3 {
+    letter-spacing: 2px;
+}
+
+/* ეს კონკრეტულად ღილაკებს აიძულებს გაწელონ ტექსტი ქართულზე */
+body.lang-ge .btn {
+    letter-spacing: 2px; /* შეგიძლია გაზარდო 1.5px-მდე თუ გინდა */
+}
+
+/* თუ სხვა ელემენტებზეც (მაგ: input) არ მუშაობს, ესეც მიამატე: */
+body.lang-ge input,
+body.lang-ge select,
+body.lang-ge textarea {
+    letter-spacing: 2px;
+}

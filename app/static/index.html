@@ -1,342 +1,532 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnlyPings | Command Center</title>
-    <style>
-        /* --- VISUAL CORE (DARK CYBER THEME) --- */
-        :root {
-            --bg-dark: #050505;       /* Deepest Black */
-            --bg-panel: #0f0f11;      /* Panel Grey */
-            --accent: #00f0ff;        /* Neon Cyan */
-            --accent-glow: rgba(0, 240, 255, 0.4);
-            --mc-accent: #43b581;     /* Minecraft Green */
-            --text-main: #ffffff;
-            --text-muted: #888888;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            overflow-x: hidden;
-        }
-
-        /* --- NAVIGATION --- */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            background: rgba(15, 15, 17, 0.95);
-            border-bottom: 1px solid #222;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .logo img { height: 40px; } /* ლოგოს ზომა */
-        .logo span { color: var(--accent); }
-
-        .nav-items a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-left: 25px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-items a:hover, .nav-items a.active {
-            color: var(--accent);
-            text-shadow: 0 0 8px var(--accent-glow);
-        }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            text-align: center;
-            padding: 100px 20px;
-            background: radial-gradient(circle at top, #1a1a20 0%, var(--bg-dark) 70%);
-            border-bottom: 1px solid #222;
-        }
-
-        .ping-badge {
-            background: rgba(0, 240, 255, 0.1);
-            color: var(--accent);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            border: 1px solid var(--accent-glow);
-            display: inline-block;
-            margin-bottom: 20px;
-            font-family: monospace;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin: 0;
-            line-height: 1.2;
-            text-transform: uppercase;
-        }
-
-        .hero p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 20px auto 40px;
-        }
-
-        /* --- PACKAGE GRID --- */
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-header h2 {
-            font-size: 2rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 10px;
-        }
-        
-        .section-header p { color: var(--text-muted); }
-
-        /* Grid Layout */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 100px;
-        }
-
-        /* CARD DESIGN */
-        .card {
-            background: var(--bg-panel);
-            border: 1px solid #222;
-            border-radius: 16px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .card:hover {
-            transform: translateY(-7px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Top Tier Glow (King / Herobrine) */
-        .card.top-tier {
-            border: 1px solid var(--accent);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
-        }
-
-        .card h3 {
-            font-size: 1.4rem;
-            margin: 0 0 10px 0;
-            text-transform: uppercase;
-        }
-
-        .price {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #fff;
-            margin: 15px 0;
-        }
-        
-        .price span { font-size: 1rem; color: var(--text-muted); font-weight: normal; }
-        .price.free { color: var(--accent); font-size: 1.8rem; }
-
-        .desc {
-            color: var(--text-muted);
-            margin-bottom: 25px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-
-        /* Specs List */
-        .specs {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 25px;
-            font-family: monospace;
-            font-size: 0.85rem;
-        }
-
-        .specs div {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            color: #ccc;
-        }
-
-        .specs div:last-child { margin-bottom: 0; }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 8px;
-            border: none;
-            background: #fff;
-            color: #000;
-            font-weight: 800;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: var(--accent);
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        .btn.outline {
-            background: transparent;
-            border: 1px solid #444;
-            color: #fff;
-        }
-        
-        .btn.outline:hover {
-            border-color: #fff;
-        }
-
-        /* Minecraft Specific Styles */
-        .mc-section .card:hover { border-color: var(--mc-accent); }
-        .mc-section .price.free { color: var(--mc-accent); }
-        .mc-section .btn:hover { background: var(--mc-accent); box-shadow: 0 0 15px rgba(67, 181, 129, 0.4); }
-        .mc-section .ping-badge { color: var(--mc-accent); border-color: var(--mc-accent); background: rgba(67, 181, 129, 0.1); }
-
-    </style>
-</head>
-<body>
-
-    <nav>
-        <div class="logo">
-            <img src="logo.png" alt="OP" onerror="this.style.display='none'"> 
-            Only<span>Pings</span>
-        </div>
-        <div class="nav-items">
-            <a href="#" class="active">Radar</a>
-            <a href="#cs2">CS2</a>
-            <a href="#minecraft">Minecraft</a>
-            <a href="https://panel.onlypings.ge" target="_blank" style="color: #fff; border: 1px solid #333; padding: 8px 15px; border-radius: 5px;">Login to Panel</a>
-        </div>
-    </nav>
-
-    <section class="hero">
-        <div class="ping-badge">● LIVE STATUS: 5ms LATENCY</div>
-        <h1>Command Center</h1>
-        <p>Deploy your high-performance game servers instantly. Low ping, high tickrate, zero bullshit.</p>
-        <a href="#cs2" class="btn" style="width: auto; padding: 12px 40px;">Initialize Deployment</a>
-    </section>
-
-    <div class="container">
-
-        <div class="section-header" id="cs2">
-            <h2>Counter-Strike 2</h2>
-            <p>128 Tick / Low Latency / DDoS Protected</p>
-        </div>
-        <div class="grid" id="cs2-grid">
-            <p>Loading Intel...</p>
-        </div>
-
-        <div class="section-header mc-section" id="minecraft" style="margin-top: 100px;">
-            <h2 style="color: var(--mc-accent);">Minecraft Java</h2>
-            <p>Powered by Ryzen / NVMe / 24/7 Uptime</p>
-        </div>
-        <div class="grid mc-section" id="mc-grid">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>OnlyPings | Welcome</title>
+      <link rel="icon" type="image/png" href="logo.png">
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="style.css">
+   </head>
+   <body>
+      <div id="splash-screen">
+         <img src="namelogo.jpg" alt="OnlyPings Loading" class="splash-logo" id="splashLogo">
+      </div>
+      <header>
+         <div class="header-content">
+            <div class="logo-container">
+               <img src="namelogo.jpg" alt="OnlyPings Logo" class="logo-img" id="headerLogo">
             </div>
-
-    </div>
-
-    <script>
-        async function loadData() {
-            try {
-                // მონაცემების წამოღება
-                const res = await fetch('/api/packages');
-                const data = await res.json();
-
-                const cs2Grid = document.getElementById('cs2-grid');
-                const mcGrid = document.getElementById('mc-grid');
-
-                // გასუფთავება
-                cs2Grid.innerHTML = '';
-                mcGrid.innerHTML = '';
-
-                data.forEach(pkg => {
-                    // "უფასოს" ლოგიკა
-                    let priceDisplay = `₾${pkg.price}<span>/mo</span>`;
-                    if (pkg.price === 0) {
-                        priceDisplay = `<div class="price free">FREE ACCESS</div>`;
-                    } else {
-                        priceDisplay = `<div class="price">${priceDisplay}</div>`;
-                    }
-
-                    // "ტოპ პაკეტის" ლოგიკა (King ან Herobrine)
-                    let cardClass = 'card';
-                    if (pkg.name === 'King' || pkg.name === 'Herobrine') {
-                        cardClass += ' top-tier';
-                    }
-
-                    // HTML-ის აწყობა
-                    const html = `
-                        <div class="${cardClass}">
-                            <h3>${pkg.name}</h3>
-                            <div class="desc">${pkg.description}</div>
-                            ${priceDisplay}
-                            
-                            <div class="specs">
-                                <div><span>RAM</span> ${pkg.ram_limit} MB</div>
-                                <div><span>CPU</span> ${pkg.cpu_limit}%</div>
-                                <div><span>DISK</span> ${pkg.disk_limit / 1000} GB</div>
-                            </div>
-
-                            <button class="btn ${pkg.price === 0 ? 'outline' : ''}">
-                                ${pkg.price === 0 ? 'Deploy Now' : 'Subscribe'}
-                            </button>
+            <div class="auth-buttons">
+            <button class="btn btn-outline" data-i18n="signin">Sign In</button>
+            <button class="btn btn-primary" data-i18n="startnow">Start Now</button>
+            </div>
+         </div>
+      </header>
+      <div class="layout-container">
+         <aside class="sidebar">
+            <nav>
+               <a href="javascript:void(0)" class="nav-link active" onclick="customScroll('radar')" data-i18n="nav_radar">Radar</a>
+               <a href="javascript:void(0)" class="nav-link" onclick="customScroll('warroom')" data-i18n="nav_warroom">War Room</a>
+               <a href="javascript:void(0)" class="nav-link" onclick="customScroll('armory')" data-i18n="nav_armory">Armory</a>
+               <a href="javascript:void(0)" class="nav-link" onclick="customScroll('intel')" data-i18n="nav_intel">Intel</a>
+            </nav>
+            <div class="sidebar-footer">
+               <div class="lang-container" id="langContainer">
+                  <div class="current-lang-wrapper" onclick="toggleLang()">
+                     <img src="circle-flags--en.svg" alt="en" id="mainFlag" class="icon-flag">
+                  </div>
+                  <div class="lang-options" id="langOptions">
+                  </div>
+               </div>
+               <div class="icon-group" onclick="toggleTheme()">
+                  <img src="solar--moon-stars-linear.svg" alt="Dark Mode" class="icon-moon" id="themeIcon">
+               </div>
+            </div>
+         </aside>
+         <main class="content-area">
+            <div id="main-wrapper">
+               <div id="radar" class="radar-card">
+                  <div class="radar-header">
+                     <div class="radar-title-container">
+                        <h2 class="radar-title" data-i18n="hq_title">ONLYPINGS HQ</h2>
+                        <div class="flag-container">
+                           <img src="GE_flag.svg" alt="GE Flag" class="header-flag">
+                           <img src="GE_flag.svg" alt="GE Flag" class="header-flag">
+                           <img src="GE_flag.svg" alt="GE Flag" class="header-flag">
+                           <img src="GE_flag.svg" alt="GE Flag" class="header-flag">
+                           <img src="GE_flag.svg" alt="GE Flag" class="header-flag">
+                           <img src="GE_flag.svg" alt="GE Flag" class="header-flag">
                         </div>
-                    `;
-
-                    // განაწილება
-                    if (pkg.game_type === 'cs2') {
-                        cs2Grid.innerHTML += html;
-                    } else {
-                        mcGrid.innerHTML += html;
-                    }
-                });
-
-            } catch (err) {
-                console.error(err);
-                document.getElementById('cs2-grid').innerHTML = 'SYSTEM FAILURE: Cannot connect to API.';
-            }
-        }
-
-        loadData();
-    </script>
-
-</body>
+                     </div>
+                        <p class="radar-subtitle">
+                           <span data-i18n="system_status">System Status:</span> 
+                           <span class="status-green" data-i18n="operational">OPERATIONAL</span> | 
+                           <span data-i18n="region">Region:</span> 
+                           <span class="status-text" data-i18n="caucasus">Caucasus</span>
+                        </p>
+                  </div>
+                  <div class="radar-content-wrapper">
+                     <div class="servers-left-panel">
+                        <div class="server-card">
+                           <div class="card-header">
+                              <span class="game-icon">🔫</span>
+                              <div>
+                                 <h3>Counter-Strike 2 Public</h3>
+                                 <span class="status-badge online" data-i18n="online">ONLINE</span>
+                              </div>
+                           </div>
+                           <div class="card-stats">
+                              <div class="stat-row"><span data-i18n="players">👥 Players:</span><strong>12 / 24</strong></div>
+                              <div class="stat-row"><span data-i18n="map">🗺️ Map:</span><strong>Dust II</strong></div>
+                           </div>
+                           <div class="server-ip-box">cs.onlypings.ge:27015</div>
+                           <button class="btn btn-sm btn-outline" onclick="copyIp('cs.onlypings.ge:27015', this)" data-i18n="copy_ip">
+                           COPY IP
+                           </button>
+                        </div>
+                        <div class="server-card">
+                           <div class="card-header">
+                              <span class="game-icon">🎯</span>
+                              <div>
+                                 <h3>Counter-Strike 2 AWP/Fun</h3>
+                                 <span class="status-badge online" data-i18n="online">ONLINE</span>
+                              </div>
+                           </div>
+                           <div class="card-stats">
+                              <div class="stat-row"><span data-i18n="players">👥 Players:</span><strong>8 / 20</strong></div>
+                              <div class="stat-row"><span data-i18n="map">🗺️ Map:</span><strong>Lego_2</strong></div>
+                           </div>
+                           <div class="server-ip-box">awp.onlypings.ge:27016</div>
+                           <button class="btn btn-sm btn-outline" onclick="copyIp('awp.onlypings.ge:27015', this)" data-i18n="copy_ip">
+                           COPY IP
+                           </button>
+                        </div>
+                        <div class="server-card">
+                           <div class="card-header">
+                              <span class="game-icon">⛏️</span>
+                              <div>
+                                 <h3>Minecraft Survival</h3>
+                                 <span class="status-badge restarting" data-i18n="restarting">RESTARTING</span>
+                              </div>
+                           </div>
+                           <div class="card-stats">
+                              <div class="stat-row"><span data-i18n="players">👥 Players:</span><strong>0 / 50</strong></div>
+                              <div class="stat-row"><span data-i18n="uptime">⏱️ Uptime:</span><strong data-i18n="loading">Loading...</strong></div>
+                           </div>
+                           <div class="server-ip-box">mc.onlypings.ge</div>
+                           <button class="btn btn-sm btn-outline" onclick="copyIp('mc.onlypings.ge', this)" data-i18n="copy_ip">
+                           COPY IP
+                           </button>
+                        </div>
+                        <div class="server-card">
+                           <div class="card-header">
+                              <span class="game-icon">☁️</span>
+                              <div>
+                                 <h3>Minecraft SkyBlock</h3>
+                                 <span class="status-badge online" data-i18n="online">ONLINE</span>
+                              </div>
+                           </div>
+                           <div class="card-stats">
+                              <div class="stat-row"><span data-i18n="players">👥 Players:</span><strong>45 / 100</strong></div>
+                              <div class="stat-row"><span data-i18n="season">📅 Season:</span><strong>#1</strong></div>
+                           </div>
+                           <div class="server-ip-box">sky.onlypings.ge</div>
+                           <button class="btn btn-sm btn-outline" onclick="copyIp('sky.onlypings.ge', this)" data-i18n="copy_ip">
+                           COPY IP
+                           </button>
+                        </div>
+                     </div>
+                     <div class="ping-right-panel">
+                        <h3 class="panel-title" data-i18n="sonar_title">SONAR</h3>
+                        <div class="ping-content-center">
+                           <div id="pingResult" class="ping-display">--- ms</div>
+                           <p class="ping-label" data-i18n="latency">LATENCY</p>
+                        </div>
+                        <button id="pingBtn" class="btn btn-primary pulse-btn" onclick="startPingTest()" data-i18n="check_ping">
+                        🔍 CHECK
+                        </button>
+                        <div class="ping-footer-info">
+                           <span data-i18n="datacenter">Tbilisi Datacenter</span>
+                           
+                           <span class="blink-dot"></span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div id="warroom" class="warroom-card">
+                  <div class="radar-header">
+                     <h3 class="war-subtitle" data-i18n="war_subtitle">Global Leaderboards & Statistics</h3>
+                  </div>
+                  <div class="system-status-container">
+                     <div class="sys-box">
+                        <div class="sys-icon">🧠</div>
+                        <div class="sys-info">
+                           <span class="sys-label" data-i18n="cpu_load">CPU LOAD</span>
+                           <span class="sys-val cpu-text">12%</span>
+                           <span class="sys-sub">AMD Ryzen 9 5.2GHz</span>
+                        </div>
+                     </div>
+                     <div class="sys-box">
+                        <div class="sys-icon">💾</div>
+                        <div class="sys-info">
+                           <span class="sys-label" data-i18n="ram_usage">RAM USAGE</span>
+                           <span class="sys-val ram-text">6.4GB</span>
+                           <span class="sys-sub">32GB DDR5 (6000MHz)</span>
+                        </div>
+                     </div>
+                     <div class="sys-box">
+                        <div class="sys-icon">🌍</div>
+                        <div class="sys-info">
+                           <span class="sys-label" data-i18n="total_online">TOTAL ONLINE</span>
+                           <span class="sys-val">128</span>
+                           <span class="sys-sub" data-i18n="capacity">Capacity: 500+</span>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="warroom-grid">
+                     <div class="stat-panel">
+                        <div class="panel-top">
+                           <h3>CS2 PUBLIC <span class="server-tag">COMPETITIVE</span></h3>
+                           <div class="table-header">
+                              <span class="th-rank">#</span>
+                              <span class="th-name" data-i18n="th_operator">OPERATOR</span>
+                              <span class="th-score">K/D</span>
+                              &nbsp;&nbsp; <span class="th-extra" data-i18n="th_kills">KILLS</span>
+                           </div>
+                        </div>
+                        <div class="scrollable-list collapsed" id="list-cs-public"></div>
+                        <div class="panel-footer">
+                           <button class="show-more-btn" onclick="toggleList('list-cs-public', this)" data-i18n="show_more">SHOW MORE ▼</button>
+                        </div>
+                     </div>
+                     <div class="stat-panel">
+                        <div class="panel-top">
+                           <h3>CS2 AWP <span class="server-tag">LEGO</span></h3>
+                           <div class="table-header">
+                              <span class="th-rank">#</span>
+                              <span class="th-name" data-i18n="th_sniper">SNIPER</span>
+                              <span class="th-score">K/D</span>
+                              <span class="th-extra">HS%</span>
+                           </div>
+                        </div>
+                        <div class="scrollable-list collapsed" id="list-cs-awp"></div>
+                        <div class="panel-footer">
+                           <button class="show-more-btn" onclick="toggleList('list-cs-awp', this)" data-i18n="show_more">SHOW MORE ▼</button>
+                        </div>
+                     </div>
+                     <div class="stat-panel">
+                        <div class="panel-top">
+                           <h3>MC SURVIVAL <span class="server-tag">SMP</span></h3>
+                           <div class="table-header">
+                              <span class="th-rank">#</span>
+                              <span class="th-name" data-i18n="th_survivor">SURVIVOR</span>
+                              <span class="th-score" data-i18n="th_time">TIME</span>
+                              <span class="th-extra" data-i18n="th_deaths">DEATHS</span>
+                           </div>
+                        </div>
+                        <div class="scrollable-list collapsed" id="list-mc-survival"></div>
+                        <div class="panel-footer">
+                           <button class="show-more-btn" onclick="toggleList('list-mc-survival', this)" data-i18n="show_more">SHOW MORE ▼</button>
+                        </div>
+                     </div>
+                     <div class="stat-panel">
+                        <div class="panel-top">
+                           <h3>MC SKYBLOCK <span class="server-tag">ECO</span></h3>
+                           <div class="table-header">
+                              <span class="th-rank">#</span>
+                                 <span class="th-name" data-i18n="th_tycoon">TYCOON</span>
+                                 <span class="th-score" data-i18n="th_balance">BALANCE</span>
+                                 <span class="th-extra" data-i18n="th_level">LEVEL</span>
+                           </div>
+                        </div>
+                        <div class="scrollable-list collapsed" id="list-mc-skyblock"></div>
+                        <div class="panel-footer">
+                           <button class="show-more-btn" onclick="toggleList('list-mc-skyblock', this)" data-i18n="show_more">SHOW MORE ▼</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div id="armory" class="armory-card">
+                  <div class="radar-header">
+                     <h3 class="war-subtitle" data-i18n="armory_subtitle">Tactical Upgrades & Supply Crates</h3>
+                  </div>
+                  <div class="armory-section-title">
+                     <span class="section-icon">🔫</span> <span data-i18n="cs_division">COUNTER-STRIKE 2 DIVISION</span>
+                  </div>
+                  <div class="armory-grid">
+                     <div class="package-card tier-default">
+                        <div class="card-top">
+                           <div class="tier-icon">🔰</div>
+                           <h3 data-i18n="tier_recruit">RECRUIT</h3>
+                           <div class="price" data-i18n="price_free">FREE</div>
+                        </div>
+                        <ul class="feature-list">
+                           <li><span class="check">✓</span> <span data-i18n="feat_public">Public Access</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_drop_rates">Standard Drop Rates</span></li>
+                           <li><span class="cross">✕</span> <span data-i18n="feat_no_reserved">No Reserved Slot</span></li>
+                           <li><span class="cross">✕</span> <span data-i18n="feat_default_skins">Default Skins</span></li>
+                        </ul>
+                        <button class="btn btn-sm btn-outline btn-disabled" data-i18n="btn_active">ACTIVE</button>
+                     </div>
+                     <div class="package-card tier-common">
+                        <div class="card-top">
+                           <div class="tier-icon">🎗️</div>
+                           <h3 data-i18n="tier_soldier">SOLDIER</h3>
+                           <div class="price">5₾ <span class="period" data-i18n="period_mo">/mo</span></div>
+                        </div>
+                        <ul class="feature-list">
+                           <li><span class="check">✓</span> <strong data-i18n="feat_vip">VIP Status in Chat</strong></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_ws_knife">Access to !ws !knife</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_reserved">Reserved Slot</span></li>
+                           <li><span class="cross">✕</span> <span data-i18n="feat_no_admin">No Admin Rights</span></li>
+                        </ul>
+                        <button class="btn btn-sm btn-primary" data-i18n="btn_equip">EQUIP</button>
+                     </div>
+                     <div class="package-card tier-rare popular">
+                        <div class="ribbon" data-i18n="ribbon_best">BEST VALUE</div>
+                        <div class="card-top">
+                           <div class="tier-icon">⭐</div>
+                           <h3 data-i18n="tier_general">GENERAL</h3>
+                           <div class="price">15₾ <span class="period" data-i18n="period_mo">/mo</span></div>
+                        </div>
+                        <ul class="feature-list">
+                           <li><span class="check">✓</span> <strong data-i18n="feat_all_soldier">Everything in Soldier</strong></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_agents">Custom Agent Models</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_immunity">Vote Immunity</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_sound">Round End Sound</span></li>
+                        </ul>
+                        <button class="btn btn-sm btn-primary" data-i18n="btn_equip">EQUIP</button>
+                     </div>
+                     <div class="package-card tier-legendary">
+                        <div class="card-top">
+                           <div class="tier-icon">👑</div>
+                           <h3 data-i18n="tier_king">KING</h3>
+                           <div class="price">30₾ <span class="period" data-i18n="period_mo">/mo</span></div>
+                        </div>
+                        <ul class="feature-list">
+                           <li><span class="check">✓</span> <strong data-i18n="feat_full_access">FULL ACCESS</strong></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_ban_rights">Vote Ban/Kick Rights</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_gold_tag">Golden Chat Tag</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_discord_role">Personal Discord Role</span></li>
+                        </ul>
+                        <button class="btn btn-sm btn-primary glow-btn" data-i18n="btn_dominate">DOMINATE</button>
+                     </div>
+                  </div>
+                  <div class="armory-section-title mc-title">
+                     <span class="section-icon">⛏️</span> <span data-i18n="mc_supply">MINECRAFT SUPPLY</span>
+                  </div>
+                  <div class="armory-grid">
+                     <div class="package-card tier-default">
+                        <div class="card-top">
+                           <div class="tier-icon">🪵</div>
+                           <h3 data-i18n="tier_wanderer">WANDERER</h3>
+                           <div class="price" data-i18n="price_free">FREE</div>
+                        </div>
+                        <ul class="feature-list">
+                           <li><span class="check">✓</span> <span data-i18n="feat_surv_sky">Survival & SkyBlock</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_1_home">1x Home Set</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_basic_claim">Basic Land Claim</span></li>
+                           <li><span class="cross">✕</span> <span data-i18n="feat_no_fly">No Fly / No Kits</span></li>
+                        </ul>
+                        <button class="btn btn-sm btn-outline btn-disabled" data-i18n="btn_active">ACTIVE</button>
+                     </div>
+                     <div class="package-card tier-common">
+                        <div class="card-top">
+                           <div class="tier-icon">👻</div>
+                           <h3 data-i18n="tier_phantom">PHANTOM</h3>
+                           <div class="price">7₾ <span class="period" data-i18n="period_mo">/mo</span></div>
+                        </div>
+                        <ul class="feature-list">
+                           <li><span class="check">✓</span> <strong data-i18n="feat_fly_hub">Fly in Hub</strong></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_color_chat">Colored Chat</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_2_homes">2x Home Sets</span></li>
+                           <li><span class="cross">✕</span> <span data-i18n="feat_no_god">No God Mode</span></li>
+                        </ul>
+                        <button class="btn btn-sm btn-primary" data-i18n="btn_unlock">UNLOCK</button>
+                     </div>
+                     <div class="package-card tier-rare popular">
+                        <div class="ribbon" data-i18n="ribbon_popular">POPULAR</div>
+                        <div class="card-top">
+                           <div class="tier-icon">💀</div>
+                           <h3 data-i18n="tier_wither">WITHER</h3>
+                           <div class="price">19₾ <span class="period" data-i18n="period_mo">/mo</span></div>
+                        </div>
+                        <ul class="feature-list">
+                           <li><span class="check">✓</span> <strong data-i18n="feat_kit_hero">Kit: Hero (Weekly)</strong></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_tpa">Fast Travel (/tpa)</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_5_homes">5x Home Sets</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_keep_inv">Keep Inventory (Nether)</span></li>
+                        </ul>
+                        <button class="btn btn-sm btn-primary" data-i18n="btn_unlock">UNLOCK</button>
+                     </div>
+                     <div class="package-card tier-god">
+                        <div class="card-top">
+                           <div class="tier-icon">👁️</div>
+                           <h3 data-i18n="tier_herobrine">HEROBRINE</h3>
+                           <div class="price">45₾ <span class="period" data-i18n="period_mo">/mo</span></div>
+                        </div>
+                        <ul class="feature-list">
+                           <li><span class="check">✓</span> <strong data-i18n="feat_op_kit">OP Kit (Daily)</strong></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_creative_fly">Creative Flight (Plot)</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_custom_prefix">Custom Prefix & Color</span></li>
+                           <li><span class="check">✓</span> <span data-i18n="feat_vault">Private Vault (Large)</span></li>
+                        </ul>
+                        <button class="btn btn-sm btn-primary glow-btn" data-i18n="btn_ascend">ASCEND</button>
+                     </div>
+                  </div>
+               </div>
+               <div id="intel" class="intel-card">
+                  <div class="radar-header">
+                     <h3 class="war-subtitle" data-i18n="intel_subtitle">Classified Server Documentation</h3>
+                  </div>
+                  <div class="intel-tabs">
+                     <button class="intel-tab active" onclick="openTab(event, 'tab-cs2')" data-i18n="tab_cs2">CS2 DIRECTIVES</button>
+                     <button class="intel-tab" onclick="openTab(event, 'tab-mc')" data-i18n="tab_mc">MC MANUAL</button>
+                     <button class="intel-tab" onclick="openTab(event, 'tab-rules')" data-i18n="tab_rules">PROTOCOLS (RULES)</button>
+                  </div>
+                  <div id="tab-cs2" class="intel-content active">
+                     <div class="command-grid">
+                        <div class="cmd-item">
+                           <code class="cmd-code">!ws</code>
+                           <span class="cmd-desc" data-i18n="desc_ws">Opens Weapon Skin menu. Pick any skin.</span>
+                        </div>
+                        <div class="cmd-item">
+                           <code class="cmd-code">!knife</code>
+                           <span class="cmd-desc" data-i18n="desc_knife">Equip any Knife model (Karambit, Butterfly...)</span>
+                        </div>
+                        <div class="cmd-item">
+                           <code class="cmd-code">!gloves</code>
+                           <span class="cmd-desc" data-i18n="desc_gloves">Change your agent gloves instantly.</span>
+                        </div>
+                        <div class="cmd-item">
+                           <code class="cmd-code">rtv</code>
+                           <span class="cmd-desc" data-i18n="desc_rtv">Rock The Vote. Start a map change vote.</span>
+                        </div>
+                        <div class="cmd-item">
+                           <code class="cmd-code">!agents</code>
+                           <span class="cmd-desc" data-i18n="desc_agents">Choose a custom player model (VIP Only).</span>
+                        </div>
+                        <div class="cmd-item">
+                           <code class="cmd-code">nominate</code>
+                           <span class="cmd-desc" data-i18n="desc_nominate">Add a specific map to the next voting cycle.</span>
+                        </div>
+                     </div>
+                  </div>
+                  <div id="tab-mc" class="intel-content" style="display: none;">
+                     <div class="command-grid">
+                        <div class="cmd-item">
+                           <code class="cmd-code">/tpa [player]</code>
+                           <span class="cmd-desc" data-i18n="desc_tpa">Request teleport to another player.</span>
+                        </div>
+                        <div class="cmd-item">
+                           <code class="cmd-code">/sethome [name]</code>
+                           <span class="cmd-desc" data-i18n="desc_sethome">Set a teleport point at your current location.</span>
+                        </div>
+                        <div class="cmd-item">
+                           <code class="cmd-code">/claim</code>
+                           <span class="cmd-desc" data-i18n="desc_claim">Protect your land using the Golden Shovel.</span>
+                        </div>
+                        <div class="cmd-item">
+                           <code class="cmd-code">/shop</code>
+                           <span class="cmd-desc" data-i18n="desc_shop">Open the server market GUI to buy/sell.</span>
+                        </div>
+                        <div class="cmd-item">
+                           <code class="cmd-code">/ah</code>
+                           <span class="cmd-desc" data-i18n="desc_ah">Auction House. Sell items to other players.</span>
+                        </div>
+                        <div class="cmd-item">
+                           <code class="cmd-code">/jobs</code>
+                           <span class="cmd-desc" data-i18n="desc_jobs">Join a job to earn money by mining/farming.</span>
+                        </div>
+                     </div>
+                  </div>
+                  <div id="tab-rules" class="intel-content" style="display: none;">
+                     <div class="rules-container">
+                        <div class="rule-box severe">
+                           <div class="rule-header">
+                              <span class="rule-icon">🚫</span> <span data-i18n="rule_zero_tol">ZERO TOLERANCE</span>
+                           </div>
+                           <p data-i18n="rule_zero_desc">Cheating, Scripting, Exploiting, or DDOS threats result in a <strong>PERMANENT BAN</strong> without appeal.</p>
+                        </div>
+                        <div class="rule-box warning">
+                           <div class="rule-header">
+                              <span class="rule-icon">⚠️</span> <span data-i18n="rule_behavior">BEHAVIOR</span>
+                           </div>
+                           <p data-i18n="rule_behavior_desc">No racism, excessive toxicity, or spawn camping. First offense: <strong>Mute/Gag</strong>. Second: <strong>Temp Ban</strong>.</p>
+                        </div>
+                        <div class="rule-box info">
+                           <div class="rule-header">
+                              <span class="rule-icon">ℹ️</span> <span data-i18n="rule_refunds">REFUNDS</span>
+                           </div>
+                           <p data-i18n="rule_refunds_desc">All purchases in the Armory are final. Chargebacks will result in an automatic account suspension.</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div id="privacy-policy" class="legal-card" style="display: none;">
+                  <div class="radar-header">
+                     <h2 class="legal-title" data-i18n="legal_privacy_title">PRIVACY PROTOCOLS</h2>
+                     <p class="radar-subtitle" data-i18n="legal_privacy_sub">DATA INTEGRITY & USER SECURITY</p>
+                  </div>
+                  <div class="legal-content">
+                     <h3 data-i18n="priv_1_title">1. Data Collection</h3>
+                     <p data-i18n="priv_1_desc">OnlyPings collects minimal data necessary for server operations. This includes your SteamID, IP address (for connection logs), and in-game chat logs to ensure community safety. We do not store sensitive payment information; all transactions are processed by third-party providers.</p>
+                     <h3 data-i18n="priv_2_title">2. Usage of Information</h3>
+                     <p data-i18n="priv_2_desc">Your data is utilized solely for: generating global leaderboards (War Room), maintaining server security (bans/mutes), and account verification for Armory purchases.</p>
+                     <h3 data-i18n="priv_3_title">3. Third-Party Sharing</h3>
+                     <p data-i18n="priv_3_desc">We do not sell or trade user identities. Data may only be shared with law enforcement if required by Georgian law or to protect the safety of our infrastructure.</p>
+                     <h3 data-i18n="priv_4_title">4. Cookies & Local Storage</h3>
+                     <p data-i18n="priv_4_desc">This website uses Local Storage to remember your theme preference (Dark/Light) and language settings. No tracking cookies are used for advertising.</p>
+                  </div>
+               </div>
+               <div id="terms-service" class="legal-card" style="display: none;">
+                  <div class="radar-header">
+                     <h2 class="legal-title" data-i18n="legal_terms_title">TERMS OF ENGAGEMENT</h2>
+                     <p class="radar-subtitle" data-i18n="legal_terms_sub">USER AGREEMENT & LIABILITY</p>
+                  </div>
+                  <div class="legal-content">
+                     <h3 data-i18n="term_1_title">1. Acceptance of Terms</h3>
+                     <p data-i18n="term_1_desc">By connecting to OnlyPings servers (CS2, Minecraft) or accessing this website, you agree to be bound by these Terms. If you do not agree, please disconnect immediately.</p>
+                     <h3 data-i18n="term_2_title">2. Code of Conduct</h3>
+                     <p data-i18n="term_2_desc">We enforce a strict "Fair Play" doctrine. Cheating, exploiting bugs, DDoSing, or engaging in hate speech will result in an immediate, non-negotiable permanent ban. Respect the admins and fellow players.</p>
+                     <h3 data-i18n="term_3_title">3. Virtual Goods & Refunds</h3>
+                     <p data-i18n="term_3_desc">All purchases made in the "Armory" (VIP status, kits, skins) are for virtual items only. These items have no real-world value. <strong>All sales are final.</strong> Chargebacks will result in a permanent suspension across all our services.</p>
+                     <h3 data-i18n="term_4_title">4. Service Availability</h3>
+                     <p data-i18n="term_4_desc">OnlyPings strives for 99.9% uptime but does not guarantee uninterrupted service. Maintenance or technical issues may cause temporary downtime. No compensation is owed for scheduled outages.</p>
+                  </div>
+               </div>
+             </div>
+               <div class="footer-wrapper">
+                  <div class="footer-logo-container">
+                     <a href="#radar" class="scroll-top-link">
+                     <img src="logo.png" alt="Logo" class="center-logo">
+                     </a>
+                  </div>
+               </div>
+            
+            <footer class="site-footer">
+               <div class="footer-content">
+                  <div class="footer-section-left">
+                     <a href="#" class="footer-link" id="link-privacy" onclick="showLegal('privacy', event)" data-i18n="privacy_link">Privacy Policy</a>
+                     <a href="#" class="footer-link" id="link-terms" onclick="showLegal('terms', event)" data-i18n="terms_link">Terms of Service</a>
+                  </div>
+                  <div class="footer-section-center">
+                     <span class="copyright" data-i18n="copyright">© 2026 OnlyPings. All rights reserved.</span>
+                  </div>
+                  <div class="footer-section-right">
+                     <span class="support-text" data-i18n="support">Get Support:</span>
+                     <a href="https://discord.gg/ARGpDPu7Gd" class="discord-btn" target="_blank">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                           <path d="M18.942 5.556C17.502 4.887 15.964 4.402 14.364 4.14C14.164 4.498 13.935 4.978 13.774 5.361C12.062 5.106 10.355 5.106 8.667 5.361C8.506 4.978 8.273 4.498 8.073 4.14C6.47 4.402 4.932 4.887 3.492 5.556C0.58 9.904 1.373 14.146 1.77 18.257C3.513 19.544 5.197 20.327 6.843 20.841C7.243 20.3 7.608 19.728 7.933 19.125C7.324 18.897 6.738 18.63 6.177 18.324C6.323 18.214 6.464 18.102 6.6 17.986C9.96 19.531 13.623 19.531 16.96 17.986C17.098 18.102 17.238 18.214 17.383 18.324C16.822 18.63 16.236 18.897 15.627 19.125C15.952 19.728 16.317 20.3 16.717 20.841C18.363 20.327 20.047 19.544 21.79 18.257C22.257 13.627 22.569 9.38 18.942 5.556ZM8.016 15.429C7.009 15.429 6.182 14.502 6.182 13.364C6.182 12.227 6.992 11.299 8.016 11.299C9.057 11.299 9.884 12.227 9.867 13.364C9.867 14.502 9.057 15.429 8.016 15.429ZM14.433 15.429C13.426 15.429 12.599 14.502 12.599 13.364C12.599 12.227 13.409 11.299 14.433 11.299C15.474 11.299 16.301 12.227 16.284 13.364C16.284 14.502 15.474 15.429 14.433 15.429Z" fill="white"/>
+                        </svg>
+                        Join Server
+                     </a>
+                  </div>
+               </div>
+            </footer>
+        </main>
+        </div>
+      <script src="script.js"></script>
+   </body>
 </html>
