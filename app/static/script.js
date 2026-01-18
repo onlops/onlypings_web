@@ -147,7 +147,7 @@ const translations = {
         nav_intel: "Intel",
         
         // Radar
-        hq_title: "ONLYPINGS HQ",
+        hq_title: "HQ",
         system_status: "System Status:",
         operational: "OPERATIONAL",
         region: "Region:",
@@ -315,7 +315,7 @@ const translations = {
         nav_intel: "დაზვერვა",
         
         // Radar
-        hq_title: "ONLYPINGS ბაზა",
+        hq_title: "ბაზა",
         system_status: "სისტემის სტატუსი:",
         operational: "აქტიური",
         region: "რეგიონი:",
