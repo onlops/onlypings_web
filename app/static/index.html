@@ -9,7 +9,7 @@
       <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
       <link rel="manifest" href="favicon_io/site.webmanifest">
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="style.css?v=0.5">
+      <link rel="stylesheet" href="style.css?v=0.6">
    </head>
    <body>
       <div id="splash-screen">
@@ -111,8 +111,9 @@
                         </p>
                   </div>
                   <div class="radar-content-wrapper">
-                     <div class="servers-left-panel">
-                        <div class="server-card">
+                     <div class="servers-left-panel" id="serversContainer">
+                        <div class="server-card" id="card-cs-public" draggable="false">
+                           <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
                            <div class="card-header">
                               <span class="game-icon">🔫</span>
                               <div>
@@ -129,7 +130,9 @@
                            COPY IP
                            </button>
                         </div>
-                        <div class="server-card">
+
+                        <div class="server-card" id="card-cs-awp" draggable="false">
+                           <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
                            <div class="card-header">
                               <span class="game-icon">🎯</span>
                               <div>
@@ -146,7 +149,9 @@
                            COPY IP
                            </button>
                         </div>
-                        <div class="server-card">
+
+                        <div class="server-card" id="card-mc-survival" draggable="false">
+                           <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
                            <div class="card-header">
                               <span class="game-icon">⛏️</span>
                               <div>
@@ -163,7 +168,9 @@
                            COPY IP
                            </button>
                         </div>
-                        <div class="server-card">
+
+                        <div class="server-card" id="card-mc-skyblock" draggable="false">
+                           <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
                            <div class="card-header">
                               <span class="game-icon">☁️</span>
                               <div>
@@ -228,68 +235,75 @@
                         </div>
                      </div>
                   </div>
-                  <div class="warroom-grid">
-                     <div class="stat-panel">
-                        <div class="panel-top">
-                           <h3>CS2 PUBLIC <span class="server-tag">COMPETITIVE</span></h3>
-                           <div class="table-header">
-                              <span class="th-rank">#</span>
-                              <span class="th-name" data-i18n="th_operator">OPERATOR</span>
-                              <span class="th-score">K/D</span>
-                              &nbsp;&nbsp; <span class="th-extra" data-i18n="th_kills">KILLS</span>
+                     <div class="warroom-grid" id="warroomContainer">
+                        <div class="stat-panel" id="stat-cs-public">
+                           <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
+                           <div class="panel-top">
+                                 <h3>CS2 PUBLIC <span class="server-tag">COMPETITIVE</span></h3>
+                                 <div class="table-header">
+                                    <span class="th-rank">#</span>
+                                    <span class="th-name" data-i18n="th_operator">OPERATOR</span>
+                                    <span class="th-score">K/D</span>
+                                    &nbsp;&nbsp; <span class="th-extra" data-i18n="th_kills">KILLS</span>
+                                 </div>
+                           </div>
+                           <div class="scrollable-list collapsed" id="list-cs-public"></div>
+                           <div class="panel-footer">
+                                 <button class="show-more-btn" onclick="toggleList('list-cs-public', this)" data-i18n="show_more">SHOW MORE ▼</button>
                            </div>
                         </div>
-                        <div class="scrollable-list collapsed" id="list-cs-public"></div>
-                        <div class="panel-footer">
-                           <button class="show-more-btn" onclick="toggleList('list-cs-public', this)" data-i18n="show_more">SHOW MORE ▼</button>
-                        </div>
-                     </div>
-                     <div class="stat-panel">
-                        <div class="panel-top">
-                           <h3>CS2 AWP <span class="server-tag">LEGO</span></h3>
-                           <div class="table-header">
-                              <span class="th-rank">#</span>
-                              <span class="th-name" data-i18n="th_sniper">SNIPER</span>
-                              <span class="th-score">K/D</span>
-                              <span class="th-extra">HS%</span>
+
+                        <div class="stat-panel" id="stat-cs-awp">
+                           <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
+                           <div class="panel-top">
+                                 <h3>CS2 AWP <span class="server-tag">LEGO</span></h3>
+                                 <div class="table-header">
+                                    <span class="th-rank">#</span>
+                                    <span class="th-name" data-i18n="th_sniper">SNIPER</span>
+                                    <span class="th-score">K/D</span>
+                                    <span class="th-extra">HS%</span>
+                                 </div>
+                           </div>
+                           <div class="scrollable-list collapsed" id="list-cs-awp"></div>
+                           <div class="panel-footer">
+                                 <button class="show-more-btn" onclick="toggleList('list-cs-awp', this)" data-i18n="show_more">SHOW MORE ▼</button>
                            </div>
                         </div>
-                        <div class="scrollable-list collapsed" id="list-cs-awp"></div>
-                        <div class="panel-footer">
-                           <button class="show-more-btn" onclick="toggleList('list-cs-awp', this)" data-i18n="show_more">SHOW MORE ▼</button>
-                        </div>
-                     </div>
-                     <div class="stat-panel">
-                        <div class="panel-top">
-                           <h3>MC SURVIVAL <span class="server-tag">SMP</span></h3>
-                           <div class="table-header">
-                              <span class="th-rank">#</span>
-                              <span class="th-name" data-i18n="th_survivor">SURVIVOR</span>
-                              <span class="th-score" data-i18n="th_time">TIME</span>
-                              <span class="th-extra" data-i18n="th_deaths">DEATHS</span>
+
+                        <div class="stat-panel" id="stat-mc-survival">
+                           <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
+                           <div class="panel-top">
+                                 <h3>MC SURVIVAL <span class="server-tag">SMP</span></h3>
+                                 <div class="table-header">
+                                    <span class="th-rank">#</span>
+                                    <span class="th-name" data-i18n="th_survivor">SURVIVOR</span>
+                                    <span class="th-score" data-i18n="th_time">TIME</span>
+                                    <span class="th-extra" data-i18n="th_deaths">DEATHS</span>
+                                 </div>
+                           </div>
+                           <div class="scrollable-list collapsed" id="list-mc-survival"></div>
+                           <div class="panel-footer">
+                                 <button class="show-more-btn" onclick="toggleList('list-mc-survival', this)" data-i18n="show_more">SHOW MORE ▼</button>
                            </div>
                         </div>
-                        <div class="scrollable-list collapsed" id="list-mc-survival"></div>
-                        <div class="panel-footer">
-                           <button class="show-more-btn" onclick="toggleList('list-mc-survival', this)" data-i18n="show_more">SHOW MORE ▼</button>
-                        </div>
-                     </div>
-                     <div class="stat-panel">
-                        <div class="panel-top">
-                           <h3>MC SKYBLOCK <span class="server-tag">ECO</span></h3>
-                           <div class="table-header">
-                              <span class="th-rank">#</span>
-                                 <span class="th-name" data-i18n="th_tycoon">TYCOON</span>
-                                 <span class="th-score" data-i18n="th_balance">BALANCE</span>
-                                 <span class="th-extra" data-i18n="th_level">LEVEL</span>
+
+                        <div class="stat-panel" id="stat-mc-skyblock">
+                           <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
+                           <div class="panel-top">
+                                 <h3>MC SKYBLOCK <span class="server-tag">ECO</span></h3>
+                                 <div class="table-header">
+                                    <span class="th-rank">#</span>
+                                    <span class="th-name" data-i18n="th_tycoon">TYCOON</span>
+                                    <span class="th-score" data-i18n="th_balance">BALANCE</span>
+                                    <span class="th-extra" data-i18n="th_level">LEVEL</span>
+                                 </div>
+                           </div>
+                           <div class="scrollable-list collapsed" id="list-mc-skyblock"></div>
+                           <div class="panel-footer">
+                                 <button class="show-more-btn" onclick="toggleList('list-mc-skyblock', this)" data-i18n="show_more">SHOW MORE ▼</button>
                            </div>
                         </div>
-                        <div class="scrollable-list collapsed" id="list-mc-skyblock"></div>
-                        <div class="panel-footer">
-                           <button class="show-more-btn" onclick="toggleList('list-mc-skyblock', this)" data-i18n="show_more">SHOW MORE ▼</button>
-                        </div>
                      </div>
-                  </div>
                </div>
                <div id="armory" class="armory-card">
                   <div class="radar-header">
@@ -571,6 +585,7 @@
             </footer>
         </main>
         </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
       <script src="script.js"></script>
    </body>
 </html>

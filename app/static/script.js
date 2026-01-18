@@ -905,3 +905,128 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: false });
     });
 });
+
+/* --- UNIVERSAL DRAG & DROP SYSTEM (Reusable) --- */
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. რადარის (სერვერების) ინიციალიზაცია
+    initDragSystem('serversContainer', '.server-card', 'serverOrder');
+    
+    // 2. ომის ოთახის (სტატისტიკის) ინიციალიზაცია
+    initDragSystem('warroomContainer', '.stat-panel', 'statsOrder');
+});
+
+function initDragSystem(containerId, itemSelector, storageKey) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    // შენახული პოზიციების აღდგენა
+    loadOrder(container, itemSelector, storageKey);
+
+    const items = container.querySelectorAll(itemSelector);
+
+    items.forEach(item => {
+        // A. სახელურის ლოგიკა
+        item.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.drag-handle')) {
+                item.setAttribute('draggable', 'true');
+            } else {
+                item.setAttribute('draggable', 'false');
+            }
+        });
+
+        item.addEventListener('mouseup', () => item.setAttribute('draggable', 'false'));
+
+        // B. Drag Start
+        item.addEventListener('dragstart', (e) => {
+            setTimeout(() => item.classList.add('dragging'), 0);
+            e.dataTransfer.setData('text/plain', item.id);
+            e.dataTransfer.effectAllowed = 'move';
+        });
+
+        // C. Drag End
+        item.addEventListener('dragend', () => {
+            item.classList.remove('dragging');
+            item.setAttribute('draggable', 'false');
+            // მხოლოდ ამ კონტეინერის ტარგეტებს ვასუფთავებთ
+            container.querySelectorAll(itemSelector).forEach(c => c.classList.remove('drag-target'));
+        });
+
+        // D. Drag Over
+        item.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            
+            if (!item.classList.contains('dragging')) {
+                item.classList.add('drag-target');
+            }
+        });
+
+        // E. Drag Leave (ზუსტი საზღვრების შემოწმებით)
+        item.addEventListener('dragleave', (e) => {
+            const rect = item.getBoundingClientRect();
+            const x = e.clientX;
+            const y = e.clientY;
+
+            if (x < rect.left || x >= rect.right || y < rect.top || y >= rect.bottom) {
+                item.classList.remove('drag-target');
+            }
+        });
+
+        // F. DROP (Swap Logic)
+        item.addEventListener('drop', (e) => {
+            e.preventDefault();
+            item.classList.remove('drag-target');
+
+            const sourceId = e.dataTransfer.getData('text/plain');
+            const sourceItem = document.getElementById(sourceId);
+            const targetItem = item;
+
+            // ვამოწმებთ, რომ ელემენტი იგივე კონტეინერს ეკუთვნის (სხვაგან არ გადაათრიონ)
+            if (sourceItem && targetItem && sourceItem !== targetItem && container.contains(sourceItem)) {
+                swapNodes(sourceItem, targetItem);
+                saveOrder(container, itemSelector, storageKey);
+            }
+        });
+    });
+}
+
+// დამხმარე: ადგილების გაცვლა
+function swapNodes(n1, n2) {
+    const p1 = n1.parentNode;
+    const p2 = n2.parentNode;
+    const i1 = n1.nextSibling;
+    const i2 = n2.nextSibling;
+
+    if (i1 === n2) p1.insertBefore(n2, n1);
+    else if (i2 === n1) p1.insertBefore(n1, n2);
+    else {
+        p1.insertBefore(n2, i1);
+        p2.insertBefore(n1, i2);
+    }
+}
+
+// უნივერსალური შენახვა
+function saveOrder(container, itemSelector, storageKey) {
+    const order = Array.from(container.querySelectorAll(itemSelector)).map(el => el.id);
+    localStorage.setItem(storageKey, JSON.stringify(order));
+}
+
+// უნივერსალური აღდგენა
+function loadOrder(container, itemSelector, storageKey) {
+    const savedOrder = JSON.parse(localStorage.getItem(storageKey));
+    if (!savedOrder) return;
+
+    const fragment = document.createDocumentFragment();
+    
+    savedOrder.forEach(id => {
+        const item = document.getElementById(id);
+        if (item) fragment.appendChild(item);
+    });
+    
+    // თუ ახალი ელემენტები დაემატა, რაც სთორეჯში არაა
+    const remaining = container.querySelectorAll(itemSelector);
+    remaining.forEach(item => fragment.appendChild(item));
+
+    container.appendChild(fragment);
+}
