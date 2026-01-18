@@ -10,6 +10,16 @@
     --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
+html {
+    -webkit-text-size-adjust: 100%; /* კრძალავს ტექსტის გაბერვას */
+    touch-action: manipulation; /* აჩქარებს კლიკებს მობილურზე */
+}
+
+/* ეს აუცილებელია რომ Chrome-მა სქროლი არ გაგიჭედოს */
+html, body {
+    overscroll-behavior-y: none; /* "Bounce" ეფექტის კონტროლი */
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -184,13 +194,13 @@ header {
     width: 100%;
     height: 600px;
     border: 1px solid var(--border-color);
-    border-radius: 54px; /* შენი არჩეული მომრგვალება */
+    border-radius: 54px; 
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column; /* ეს დავამატე, რომ ღილაკი და ტექსტი ლამაზად განლაგდეს */
+    flex-direction: column; 
     background: var(--bg-main);
-    transition: all 0.3s ease; /* ანიმაცია თემების გადაცვლისას */
+    transition: all 0.3s ease; 
     scroll-margin-top: 50px;
 }
 
@@ -204,15 +214,15 @@ header {
     margin-bottom: 20px;
 }
 
-/* --- DARK MODE: აქ ხდება "ჩაღრმავების" მაგია --- */
+
 body.dark-mode .radar-card,
 body.dark-mode .warroom-card,
 body.dark-mode .armory-card,
 body.dark-mode .intel-card {
-    /* ფონი */
+
     background-color: var(--bg-main);
 
-    /* border: 1px solid rgba(103, 71, 33, 1);  */
+    
 }
 
 
@@ -254,13 +264,14 @@ body.dark-mode .intel-card {
 #splash-screen.fade-out {
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
 }
 
-/* ფუტერის გარშემო არსებული დივი */
+
 .footer-wrapper {
     width: 100%;
-    flex-shrink: 0; /* არ შეიკუმშოს */
-    background: var(--bg-white); /* ფონის ფერი, რომ ხაზი არ ჩანდეს */
+    flex-shrink: 0; 
+    background: var(--bg-white); 
 }
 
 body.dark-mode .footer-wrapper {
@@ -557,7 +568,7 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px; /* დაშორება ტექსტსა და დროშებს შორის */
+    gap: 15px; 
     margin-bottom: 5px;
 }
 
@@ -583,22 +594,22 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
 
 
 .header-flag {
-    height: 28px; /* დროშის სიმაღლე */
-    width: auto; /* სიგანე ავტომატურად, პროპორციის დასაცავად */
-    border-radius: 4px; /* ოდნავ მომრგვალებული კუთხეები, თუ გინდა */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* პატარა ჩრდილი, რომ გამოიკვეთოს */
+    height: 28px; 
+    width: auto; 
+    border-radius: 4px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
 }
 
 .flag-container {
     display: flex;
-    gap: 8px; /* დაშორება თვითონ დროშებს შორის */
+    gap: 8px; 
     align-items: center;
 }
 
 .radar-subtitle {
     color: var(--text-muted);
     font-size: 0.9rem;
-    font-family: 'Courier New', monospace; /* Tech vibe */
+    font-family: 'Courier New', monospace; 
 }
 
 .war-subtitle {
@@ -692,7 +703,7 @@ body.dark-mode .server-card {
     font-size: 12px;
     width: 100%;
     text-align: center;
-    text-decoration: none; /* For <a> tags */
+    text-decoration: none;
 }
 
 .btn-disabled {
@@ -720,30 +731,22 @@ body.dark-mode .btn-disabled {
 
 /* --- LOADING SPINNER (Fixed Circle) --- */
 .loading-spinner {
-    /* ზომები !important-ით, რომ არაფერმა გადააწეროს */
+  
     width: 28px !important;
     height: 28px !important;
-    
-    /* ეს ბრაუზერს აიძულებს შეინარჩუნოს კვადრატული პროპორცია (1:1) */
     aspect-ratio: 1 / 1;
-    
-    /* ფორმის დაცვა */
     min-width: 28px !important;
     min-height: 28px !important;
-    border-radius: 50% !important; /* აუცილებლად 50% */
-    
-    /* დიზაინი */
+    border-radius: 50% !important; 
     border: 3px solid rgba(136, 136, 136, 0.2);
     border-top-color: var(--primary-blue);
-    
     display: block;
-    margin: 0 auto; /* ცენტრში გაჩერება */
-    flex-shrink: 0; /* აკრძალვა შეკუმშვაზე */
-    
+    margin: 0 auto; 
+    flex-shrink: 0;
     animation: spin 0.8s linear infinite;
 }
 
-/* ანიმაციის ლოგიკა - უბრალოდ ტრიალებს */
+
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
@@ -755,34 +758,31 @@ body.dark-mode .btn-disabled {
     gap: 20px;
     width: 100%;
     max-width: 1100px;
-    /* ეს აიძულებს მარჯვენა მხარეს, გაიწელოს მარცხენას სიმაღლეზე */
     align-items: stretch; 
 }
 
 /* LEFT PANEL (Servers) */
 .servers-left-panel {
-    flex: 3; /* იკავებს სივრცის 3 წილს (უფრო განიერია) */
+    flex: 3; 
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 სვეტი: გვერდიგვერდ 2 სერვერი */
-    grid-template-rows: 1fr 1fr;    /* 2 რიგი: სულ 4 ცალი */
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     gap: 20px;
 }
 
 /* RIGHT PANEL (Ping / Sonar) */
 .ping-right-panel {
-    flex: 1; /* იკავებს სივრცის 1 წილს (უფრო ვიწროა) */
-    background: var(--bg-main); /* ან ოდნავ განსხვავებული ფერი */
+    flex: 1; 
+    background: var(--bg-main); 
     border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 20px;
-    
-    /* შიგთავსის განლაგება */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* ელემენტებს გადაანაწილებს ზემოთ, შუაში და ქვემოთ */
+    justify-content: space-between;
     text-align: center;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.03); /* "ჩაღრმავებული" ეფექტი */
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.03); 
 }
 
 /* Dark mode adjustment for right panel */
@@ -807,20 +807,18 @@ body.dark-mode .ping-right-panel {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-grow: 1; /* იკავებს თავისუფალ ადგილს შუაში */
+    flex-grow: 1; 
 }
 
 .ping-display {
-    /* ისევ ის პარამეტრები, რაც მრგვალი სპინერისთვის გვინდოდა */
     width: 90px;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 30px;
-    
     font-family: 'Courier New', monospace;
-    font-size: 32px; /* ოდნავ გავზარდე რიცხვი */
+    font-size: 32px; 
     font-weight: bold;
     color: var(--primary-blue);
     margin-bottom: 5px;
@@ -855,37 +853,35 @@ body.dark-mode .ping-right-panel {
     100% { opacity: 0.4; }
 }
 
-/* Mobile Responsiveness: ტელეფონზე ჩამოიტანოს ქვემოთ */
+
 @media (max-width: 768px) {
     .radar-content-wrapper {
-        flex-direction: column; /* სვეტებად განლაგება */
+        flex-direction: column; 
     }
     
     .servers-left-panel {
-        grid-template-columns: 1fr; /* სერვერებიც თითო-თითო */
+        grid-template-columns: 1fr; 
     }
     
     .ping-right-panel {
-        min-height: 200px; /* ტელეფონზე სიმაღლის შეზღუდვა */
+        min-height: 200px; 
     }
 }
 
 /* --- SERVER IP DISPLAY (For Mobile Visibility) --- */
 .server-ip-box {
-    background: rgba(0, 0, 0, 0.06); /* ოდნავ მუქი ფონი */
+    background: rgba(0, 0, 0, 0.06);
     padding: 8px;
     border-radius: 6px;
     text-align: center;
-    font-family: 'Courier New', monospace; /* კოდის ფონტი */
+    font-family: 'Courier New', monospace; 
     font-size: 13px;
     color: var(--text-main);
     font-weight: 600;
-    margin-bottom: 5px; /* დაშორება ღილაკთან */
-    margin-top: auto; /* მიაწვება ზედა ელემენტებს */
-    border: 1px dashed var(--border-color); /* წყვეტილი ჩარჩო ტექნიკური ვიზუალისთვის */
-    
-    /* ეს ძალიან მაგარი რამეა: */
-    user-select: all; /* ერთხელ დაწკაპუნებით მთლიანად მოინიშნება */
+    margin-bottom: 5px; 
+    margin-top: auto; 
+    border: 1px dashed var(--border-color); 
+    user-select: all; 
 }
 
 /* Dark Mode-ზე რომ კარგად ჩანდეს */
@@ -900,10 +896,10 @@ body.dark-mode .server-ip-box {
 .warroom-card {
     height: auto !important;
     min-height: 800px;
-    padding: 40px; /* აუცილებელი პადინგი */
+    padding: 40px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* ცენტრირება */
+    align-items: center;
 }
 
 /* System Status Container (New Hardware Look) */
@@ -911,9 +907,9 @@ body.dark-mode .server-ip-box {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    width: 100%; /* მთლიან სიგანეზე */
+    width: 100%; 
     margin-bottom: 30px;
-    flex-wrap: wrap; /* მობილურზე რომ ჩამოვიდეს */
+    flex-wrap: wrap; 
 }
 
 .sys-box {
@@ -968,7 +964,7 @@ body.dark-mode .server-ip-box {
 /* Hardware Specs Text (DDR5, Ryzen etc) */
 .sys-sub {
     font-size: 11px;
-    color: var(--primary-blue); /* გამორჩეული ფერი */
+    color: var(--primary-blue); 
     font-weight: 600;
     background: rgba(45, 156, 219, 0.08);
     padding: 2px 6px;
@@ -979,10 +975,10 @@ body.dark-mode .server-ip-box {
 /* Grid Layout Fixes */
 .warroom-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* ზუსტად შუაზე */
+    grid-template-columns: 1fr 1fr; 
     gap: 25px;
-    width: 100%; /* აუცილებელია! */
-    box-sizing: border-box; /* რომ არ გაიწელოს */
+    width: 100%;
+    box-sizing: border-box; 
 }
 
 /* Panel Design Fixed */
@@ -994,7 +990,7 @@ body.dark-mode .server-ip-box {
     display: flex;
     flex-direction: column;
     height: 500px; 
-    width: 100%; /* აუცილებელია! */
+    width: 100%; 
 }
 
 .panel-top {
@@ -1047,18 +1043,18 @@ body.dark-mode .server-ip-box {
 }
 
 .scrollable-list.collapsed {
-    max-height: 240px; /* დაახლოებით 5-6 კაცი */
-    overflow: hidden; /* სქროლი გათიშულია! */
+    max-height: 240px; 
+    overflow: hidden; 
     
-    /* ეფექტი: ქვემოთ გამჭვირვალე ხდება */
+    
     -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
 }
 
 .scrollable-list.expanded {
-    max-height: 500px; /* სრული სიმაღლე */
-    overflow-y: auto; /* სქროლი ჩაირთვება */
-    -webkit-mask-image: none; /* ეფექტი მოიხსნება */
+    max-height: 500px;
+    overflow-y: auto;
+    -webkit-mask-image: none; 
     mask-image: none;
 }
 
@@ -1172,19 +1168,19 @@ body.dark-mode .server-ip-box {
     align-items: center;
     gap: 10px;
 }
-.mc-title { margin-top: 60px; } /* მეტი დაშორება მეორე სექციისთვის */
+.mc-title { margin-top: 60px; } 
 
 /* Grid Layouts */
 .armory-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 სვეტი CS-ისთვის */
+    grid-template-columns: repeat(4, 1fr); 
     gap: 20px;
     width: 100%;
 }
 
 .armory-grid.three-col {
-    grid-template-columns: repeat(3, 1fr); /* 3 სვეტი MC-ისთვის */
-    max-width: 1000px; /* ოდნავ ვიწრო, რომ ცენტრში იყოს */
+    grid-template-columns: repeat(3, 1fr); 
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -1197,7 +1193,7 @@ body.dark-mode .server-ip-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative; /* Ribbon-ისთვის */
+    position: relative; 
     transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
     overflow: hidden;
 }
@@ -1247,7 +1243,7 @@ body.dark-mode .server-ip-box {
     padding: 0;
     margin: 0 0 25px 0;
     width: 100%;
-    flex-grow: 1; /* ღილაკი ქვემოთ რომ ჩავიდეს */
+    flex-grow: 1;
 }
 
 .feature-list li {
@@ -1394,7 +1390,7 @@ body.dark-mode .server-ip-box {
     background: var(--inner-card-bg);
     border-left: 3px solid var(--primary-blue);
     padding: 15px;
-    border-radius: 0 8px 8px 0; /* მარცხენა მხარე სწორი, მარჯვენა მომრგვალებული */
+    border-radius: 0 8px 8px 0;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -1452,7 +1448,7 @@ body.dark-mode .cmd-code {
     border-color: rgba(231, 76, 60, 0.3);
     color: #c0392b;
 }
-.rule-box.severe p { color: var(--text-main); } /* ტექსტი რომ იკითხებოდეს */
+.rule-box.severe p { color: var(--text-main); } 
 
 .rule-box.warning {
     background: rgba(243, 156, 18, 0.1);
@@ -1528,7 +1524,6 @@ body.dark-mode .legal-content p {
     filter: grayscale(0%);
 }
 
-/* მობილურზე ტექსტის ზომის კორექცია */
 @media (max-width: 768px) {
     .legal-card {
         padding: 30px;
@@ -1542,7 +1537,6 @@ body.dark-mode .legal-content p {
 }
 
 
-/* გამონაკლისები: აიკონები და კოდები არ უნდა გაიწელოს */
 body.lang-ge .game-icon,
 body.lang-ge .tier-icon,
 body.lang-ge .cmd-code,
@@ -1550,3 +1544,359 @@ body.lang-ge .material-icons {
     letter-spacing: normal;
 }
 
+/* --- RESPONSIVE DESIGN & MOBILE OPTIMIZATION --- */
+
+/* 1. დამალული ელემენტები დეფოლტად */
+.hamburger-btn { display: none; }
+.mobile-menu { display: none; }
+.header-left { display: flex; align-items: center; gap: 15px; }
+
+/* 2. TABLET (iPad Pro Vertical & Small Laptops) - Max Width 1024px */
+@media (max-width: 1024px) {
+    .content-area { padding: 0 20px; }
+    
+    /* Sidebar დავიწროება */
+    .sidebar { width: 80px; padding-left: 0; display: flex; flex-direction: column; align-items: center; }
+    .nav-link { font-size: 12px; text-align: center; margin-bottom: 30px; }
+    .nav-link::after { display: none; } /* ხაზების დამალვა */
+    
+    /* ბარათების გრიდები */
+    .armory-grid { grid-template-columns: 1fr 1fr; }
+    .warroom-grid { grid-template-columns: 1fr; }
+    
+    /* Radar ორ ნაწილად */
+    .radar-content-wrapper { flex-direction: column; }
+    .servers-left-panel { grid-template-columns: 1fr 1fr; margin-bottom: 20px; }
+}
+
+/* --- MOBILE & SMALL TABLET OPTIMIZATION (FINAL FIXED VERSION) --- */
+@media (max-width: 768px) {
+    
+    /* 1. SCROLL FIX (MAGIC PART) */
+    body {
+        position: relative;
+        height: 100dvh;
+        width: 100%;
+        min-height: 100vh; /* height: auto-ს მაგივრად */
+        overflow: hidden;
+        -webkit-overflow-scrolling: touch; /* აუცილებელია iOS სქროლისთვის */
+        background-color: var(--bg-main);
+        cursor: pointer; /* ეს ეხმარება iOS-ს კლიკების აღქმაში */
+    }
+
+    header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        z-index: 1000;
+        background-color: var(--bg-main);
+        border-bottom: 1px solid var(--border-color);
+        padding: 0;
+    }
+
+    .content-area {
+        position: absolute;
+        top: 0; 
+        left: 0;
+        right: 0;
+        bottom: 0; 
+        width: 100%;
+        height: calc(100dvh - 70px); 
+        overflow-y: auto; 
+        -webkit-overflow-scrolling: touch;
+        padding: 20px;
+        padding-bottom: 120px; 
+        z-index: 1;
+    }
+
+    /* 2. HEADER ELEMENTS */
+    .header-content { 
+        padding: 0 20px; 
+        position: relative;
+        justify-content: flex-start;
+        height: 100%;
+        background-color: var(--bg-main);
+    }
+
+    .header-logo-link {
+    pointer-events: auto; /* ეს აუცილებელია, რომ ლინკმა იმუშაოს! */
+    display: block; /* რომ სურათი კარგად ჩაჯდეს */
+    cursor: pointer;
+    }
+    
+    .desktop-only { display: none; }
+
+    .hamburger-btn {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--text-main);
+        cursor: pointer;
+        padding: 10px; 
+        z-index: 2000; 
+        position: relative; 
+        pointer-events: auto;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .hamburger-btn svg {
+        pointer-events: none;
+    }
+    
+    .logo-container {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+        z-index: 100;
+        pointer-events: none;
+    }
+    
+    .logo-img { height: 45px; pointer-events: auto; } 
+
+    /* 3. SPLASH & HQ TEXT */
+    .splash-logo {
+        width: 60% !important;
+        max-width: 250px;
+        height: auto;
+    }
+
+    .radar-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .radar-title-container { flex-direction: column; gap: 5px; }
+    .radar-title { font-size: 2rem; flex-direction: column; line-height: 1.2; }
+    .hq-text { display: block; font-size: 1.5rem; color: var(--primary-blue); margin-top: 5px; }
+    .flag-container { justify-content: center; margin-top: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .header-flag { height: 20px; }
+
+    /* 4. FOOTER FIXES */
+    .site-footer {
+        height: auto;
+        padding: 30px 0;
+        margin-top: 20px;
+    }
+    .footer-content {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 20px;
+        text-align: center;
+    }
+    .footer-section-left, .footer-links, .footer-section-right {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+    .footer-logo-container { padding: 10px 0; }
+    .center-logo {
+        height: auto;
+        width: auto;
+        max-height: 150px; 
+        max-width: 150px;
+    }
+
+    /* 5. ORIENTATION & CARD FIXES (ROTATION BUG) */
+    
+    .sidebar { display: none; }
+    .layout-container { display: block; height: auto; }
+
+    /* ყველა მთავარ ბარათს ვაიძულებთ ჩაეტიოს ეკრანში */
+    .radar-card, .warroom-card, .armory-card, .intel-card, .legal-card {
+        min-height: auto;
+        height: auto !important;
+        padding: 25px 15px;
+        border-radius: 24px;
+        margin-bottom: 30px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box; /* ზომების დათვლა ჩარჩოს ჩათვლით */
+    }
+    
+    /* Radar-ის შიგთავსის გასწორება */
+    .radar-content-wrapper { 
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 20px;
+    }
+    
+    .servers-left-panel { 
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+        gap: 20px;
+    }
+
+    /* სერვერის ბარათები */
+    .server-card {
+        width: 100% !important;
+        min-width: 0; /* კრიტიკულია გრიდისთვის! */
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* IP Box-ის დაცვა გაწელვისგან */
+    .server-ip-box {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        white-space: normal;
+        word-break: break-all; /* თუ IP გრძელია, ჩატეხავს */
+    }
+
+    .ping-right-panel { width: 100%; margin-top: 0; box-sizing: border-box; }
+    
+    /* WarRoom & Armory Fixes */
+    .warroom-grid { grid-template-columns: 1fr; width: 100%; }
+    .system-status-container { flex-direction: column; gap: 10px; width: 100%; }
+    .sys-box { width: 100%; min-width: 0; box-sizing: border-box; }
+    
+    .armory-grid, .armory-grid.three-col { grid-template-columns: 1fr; width: 100%; }
+    .package-card { width: 100%; min-width: 0; box-sizing: border-box; }
+    
+    .intel-tabs { flex-direction: column; width: 100%; }
+    .command-grid { grid-template-columns: 1fr; }
+
+    /* Mobile Menu */
+    .mobile-menu {
+        display: none; /* დეფოლტად დამალული */
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: var(--bg-main);
+        z-index: 999;
+        flex-direction: column;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .mobile-menu.active {
+    display: flex; /* This makes it visible when JS adds the class */
+    }
+    
+    body.dark-mode #mobileThemeIcon {
+        filter: invert(1) brightness(100);
+    }
+
+    /* --- MOBILE MENU FIXES --- */
+
+    /* მენიუს ძირითადი კონტეინერი */
+    .mobile-menu-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* ვერტიკალურად ცენტრირება */
+        align-items: center;     /* ჰორიზონტალურად ცენტრირება */
+        height: 100%;
+        width: 100%;
+        padding-bottom: 50px; /* რომ ბოლომდე არ ჩავიდეს */
+    }
+
+    /* ნავიგაციის ლინკები - გადიდებული */
+    .mobile-nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 35px; /* დაშორება ლინკებს შორის */
+        margin-bottom: 50px; /* დაშორება ღილაკებამდე */
+    }
+
+    .mobile-nav .nav-link {
+        font-size: 28px !important; /* ტექსტის ზომის გაზრდა */
+        font-weight: 800 !important;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0 !important; /* ძველი მარჯინების განულება */
+        color: var(--text-main);
+    }
+
+    .mobile-nav .nav-link:hover {
+        color: var(--primary-blue);
+        transform: scale(1.1); /* ოდნავ გადიდება დაჭერისას */
+    }
+
+    /* Footer ნაწილი (ღილაკები და სეთინგები) */
+    .mobile-menu-footer {
+        width: 100%;
+        max-width: 320px; /* რომ ძალიან არ გაიწელოს */
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    /* Auth ღილაკები (Sign In / Start Now) - დაპატარავებული და ცენტრში */
+    .auth-buttons-mobile {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .auth-buttons-mobile .btn {
+        width: auto !important; /* full-width-ის გაუქმება */
+        flex: 1; /* თანაბარი ზომები */
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 12px;
+    }
+
+    /* სეთინგების რიგი (ენა და თემა) - გასწორებული */
+    .settings-row {
+        display: flex;
+        justify-content: space-between; /* უკიდურეს მხარეებში გაწევა */
+        align-items: center;
+        background: rgba(128, 128, 128, 0.1); /* ოდნავ ფონი */
+        padding: 12px 25px;
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+    }
+
+    /* ენის კონტეინერი */
+    .lang-container-mobile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+    }
+
+    #mobileLangText {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-main);
+    }
+
+    .lang-container-mobile img {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+    }
+
+    /* თემის აიქონი */
+    .theme-toggle-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        transition: background 0.2s;
+    }
+
+    .theme-toggle-mobile:active {
+        background: rgba(128, 128, 128, 0.2);
+    }
+
+    .theme-toggle-mobile img {
+        width: 28px;
+        height: 28px;
+        display: block;
+    }
+    
+}

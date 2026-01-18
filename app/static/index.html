@@ -9,23 +9,62 @@
       <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
       <link rel="manifest" href="favicon_io/site.webmanifest">
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="style.css?v=0.4">
+      <link rel="stylesheet" href="style.css?v=0.5">
    </head>
    <body>
       <div id="splash-screen">
          <img src="namelogo.jpg" alt="OnlyPings Loading" class="splash-logo" id="splashLogo">
       </div>
-      <header>
+<header>
          <div class="header-content">
-            <div class="logo-container">
-               <img src="namelogo.jpg" alt="OnlyPings Logo" class="logo-img" id="headerLogo">
+            <div class="header-left">
+                <button id="mobileMenuBtn" class="hamburger-btn" aria-label="Menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12h18M3 6h18M3 18h18" />
+                    </svg>
+                </button>
+               <div class="logo-container">
+                  <a href="javascript:void(0)" onclick="customScroll('radar')" class="header-logo-link">
+                     <img src="namelogo.jpg" alt="OnlyPings Logo" class="logo-img" id="headerLogo">
+                  </a>
+               </div>
             </div>
-            <div class="auth-buttons">
-            <button class="btn btn-outline" data-i18n="signin">Sign In</button>
-            <button class="btn btn-primary" data-i18n="startnow">Start Now</button>
+
+            <div class="auth-buttons desktop-only">
+                <button class="btn btn-outline" data-i18n="signin">Sign In</button>
+                <button class="btn btn-primary" data-i18n="startnow">Start Now</button>
             </div>
          </div>
       </header>
+
+      <div id="mobile-menu-overlay" class="mobile-menu">
+          <div class="mobile-menu-content">
+              <nav class="mobile-nav">
+                  <a href="javascript:void(0)" class="nav-link mobile-link" onclick="customScroll('radar')" data-i18n="nav_radar">Radar</a>
+                  <a href="javascript:void(0)" class="nav-link mobile-link" onclick="customScroll('warroom')" data-i18n="nav_warroom">War Room</a>
+                  <a href="javascript:void(0)" class="nav-link mobile-link" onclick="customScroll('armory')" data-i18n="nav_armory">Armory</a>
+                  <a href="javascript:void(0)" class="nav-link mobile-link" onclick="customScroll('intel')" data-i18n="nav_intel">Intel</a>
+              </nav>
+              
+              <div class="mobile-menu-footer">
+                  <div class="auth-buttons-mobile">
+                      <button class="btn btn-outline full-width" data-i18n="signin">Sign In</button>
+                      <button class="btn btn-primary full-width" data-i18n="startnow">Start Now</button>
+                  </div>
+                  
+                  <div class="settings-row">
+                      <div class="lang-container-mobile" onclick="toggleLang()">
+                          <img src="circle-flags--en.svg" alt="lang" id="mobileFlag" class="icon-flag">
+                          <span id="mobileLangText">English</span>
+                      </div>
+                      <div class="theme-toggle-mobile" onclick="toggleTheme()">
+                          <img src="solar--moon-stars-linear.svg" alt="theme" id="mobileThemeIcon" class="icon-moon">
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
       <div class="layout-container">
          <aside class="sidebar">
             <nav>
@@ -52,7 +91,9 @@
                <div id="radar" class="radar-card">
                   <div class="radar-header">
                      <div class="radar-title-container">
-                        <h2 class="radar-title" data-i18n="hq_title">ONLYPINGS HQ</h2>
+                        <h2 class="radar-title">ONLYPINGS 
+                           <span class="hq-text">HQ</span>
+                        </h2>
                         <div class="flag-container">
                            <img src="GE_flag.svg" alt="GE Flag" class="header-flag">
                            <img src="GE_flag.svg" alt="GE Flag" class="header-flag">

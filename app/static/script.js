@@ -356,7 +356,7 @@ const translations = {
 
         // Armory (CS2)
         armory_subtitle: "ტაქტიკური აღჭურვილობა და მარაგი",
-        cs_division: "COUNTER-STRIKE 2 დივიზია",
+        cs_division: "COUNTER-STRIKE 2 დივიზიონი",
         mc_supply: "MINECRAFT-ის მარაგი",
         price_free: "უფასო",
         period_mo: "/თვე",
@@ -498,9 +498,18 @@ function updateLanguage() {
     // 1. დროშის შეცვლა
     const selectedLangObj = languagesList.find(l => l.code === currentLang);
     const mainFlag = document.getElementById('mainFlag');
+    const mobileLangText = document.getElementById('mobileLangText');
+
     if(mainFlag) {
         mainFlag.src = selectedLangObj.src;
         mainFlag.alt = selectedLangObj.code;
+    }
+
+    if(mobileFlag) {
+        mobileFlag.src = selectedLangObj.src;
+    }
+    if(mobileLangText) {
+        mobileLangText.innerText = currentLang === 'en' ? 'English' : 'ქართული';
     }
 
     // 2. CSS კლასის მართვა (ეს არის ახალი ნაწილი!)
@@ -548,12 +557,39 @@ function applyTheme(isDark) {
     updateHeaderIcons();
 }
 
+/* --- MOBILE MENU LOGIC --- */
+
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu-overlay');
+    
+    if (menu.classList.contains('active')) {
+        menu.classList.remove('active');
+        
+        // აქ 'auto'-ს მაგივრად ვიყენებთ ცარიელ სტრინგს.
+        // ეს "ასუფთავებს" JS-ის ჩარევას და CSS-ს აბრუნებს ძალაში.
+        document.body.style.overflow = ''; 
+        
+    } else {
+        menu.classList.add('active');
+        
+        // მენიუ როცა ღიაა, სქროლი იბლოკება
+        document.body.style.overflow = 'hidden'; 
+    }
+}
+
+
+
 function updateHeaderIcons() {
+    const mobileThemeIcon = document.getElementById('mobileThemeIcon');
     const isDark = body.classList.contains('dark-mode');
     const themeIcon = document.getElementById('themeIcon');
     const headerLogo = document.getElementById('headerLogo');
     const splashLogo = document.getElementById('splashLogo');
     const footerLogo = document.getElementById('footerLogo');
+
+    if(mobileThemeIcon) {
+        mobileThemeIcon.src = isDark ? IMG_ASSETS.iconMoon : IMG_ASSETS.iconSun;
+    }
 
     if (themeIcon) {
         themeIcon.classList.remove('anim-sun', 'anim-moon');
@@ -803,37 +839,69 @@ function resetToMain() {
     document.getElementById('link-terms').classList.remove('active-legal');
 }
 
+/* --- UNIVERSAL SCROLL FUNCTION (RESTORED DIV SCROLL) --- */
 function customScroll(targetId) {
-    // First, ensure the main content sections are visible, especially when
-    // navigating from a legal page (Privacy/Terms).
+    // 1. მენიუს დახურვა
+    const menu = document.getElementById('mobile-menu-overlay');
+    if (menu && menu.classList.contains('active')) {
+        menu.classList.remove('active');
+    }
+
     resetToMain();
 
     const element = document.getElementById(targetId);
+    // ვპოულობთ კონტეინერს, რომელიც სქროლავს
     const container = document.querySelector('.content-area');
-    // Use the first section as a reference point for scrolling.
-    const firstSection = document.querySelector('#main-wrapper > div');
+    
+    if (!element || !container) return;
 
-    if (element && container && firstSection) {
-        // The original scroll calculation was incorrect and caused the content
-        // to move up behind the header.
-        // By calculating the offset relative to the *first element* in the scroll area,
-        // we get the correct scroll position that preserves the container's top padding.
-        const topPos = element.offsetTop - firstSection.offsetTop;
+    // 2. სქროლის გამოთვლა (ახლა მობილურზეც კონტეინერი სქროლავს)
+    // მობილურზე ჰედერის გამოკლება აღარ გვინდა, რადგან კონტეინერი უკვე ჰედერის ქვემოთაა
+    const isMobile = window.innerWidth <= 768;
+    
+    // ვპოულობთ პირველ ელემენტს, რომ ათვლა სწორი იყოს
+    const firstSection = document.querySelector('#main-wrapper > div');
+    
+    if (firstSection) {
+        let topPos = element.offsetTop - firstSection.offsetTop;
+        
+        // მობილურზე პატარა კორექცია თუ საჭიროა
+        if (isMobile) {
+            topPos = topPos - 20; // 20px ჰაერი თავში
+        }
 
         container.scrollTo({
             top: topPos,
             behavior: 'smooth'
         });
-        
-        // This line was in the original function; it gives immediate feedback
-        // before the scroll-spy observer takes over to set the correct active link.
-        document.querySelectorAll('.nav-link').forEach(link => {
-            const onclickAttr = link.getAttribute('onclick');
-            if (onclickAttr && onclickAttr.includes(`'${targetId}'`)) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
-        });
     }
 }
+
+/* --- FINAL EVENT LISTENERS FOR MOBILE --- */
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('mobileMenuBtn');
+    
+    if (btn) {
+        // ფუნქცია, რომელიც მენიუს ხსნის
+        const handleMenuToggle = (e) => {
+            // თუ ეს არის touch ივენთი, გავაჩეროთ "Ghost Click"
+            if (e.type === 'touchstart' || e.type === 'touchend') {
+                e.preventDefault(); 
+            }
+            toggleMobileMenu();
+        };
+
+        // ვუსმენთ ორივე ივენთს იმედიანად
+        btn.addEventListener('touchend', handleMenuToggle, { passive: false });
+        btn.addEventListener('click', handleMenuToggle);
+    }
+    
+    // ლოგო ლინკების ფიქსი (რომ სქროლი იმუშაოს)
+    const logoLinks = document.querySelectorAll('.header-logo-link, .scroll-top-link');
+    logoLinks.forEach(link => {
+        link.addEventListener('touchend', (e) => {
+            e.preventDefault(); // ლინკის სტანდარტული ქცევის გაჩერება
+            customScroll('radar');
+        }, { passive: false });
+    });
+});
